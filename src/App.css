@@ -1,0 +1,13 @@
+.mainContainer{
+  min-height: 100dvh;
+}
+.sideBar a{
+  font-size: 13px;
+}
+.sideBar .active, .sideBar a:hover{ 
+  background-color: #101722; 
+  color: #FFF;
+}
+/* .sideBar .active:hover{
+
+} */
