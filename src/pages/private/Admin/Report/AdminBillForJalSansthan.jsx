@@ -1,11 +1,11 @@
-import Header from "../../../component/Header";
-import { select, label, btn } from "../../../utils/tailwindClasses";
+import Header from "../../../../component/Header";
+import { select, label, btn } from "../../../../utils/tailwindClasses";
 
-function ReportBillForLocalBodies() {
+function AdminBillForJalSansthan() {
   return (
     <>
       <Header
-        title="Search Varified Monthly Bill For Local Bodies"
+        title="Verified Monthly Bill for Jal Sansthan"
         action={{
           button: "",
           path: "",
@@ -65,15 +65,7 @@ function ReportBillForLocalBodies() {
           </div>
 
           <div className="relative z-0 w-full col-md-4 mb-4 group">
-            <label className={label}>Bill For</label>
-            <select className={select}>
-              <option defaultValue="">--Select--</option>
-              <option defaultValue="1">All</option>
-            </select>
-          </div>
-
-          <div className="relative z-0 w-full col-md-4 mb-4 group">
-            <label className={label}>Category Type</label>
+            <label className={label}>Jal Sansthan Name</label>
             <select className={select}>
               <option defaultValue="">--Select--</option>
               <option defaultValue="1">All</option>
@@ -107,10 +99,10 @@ function ReportBillForLocalBodies() {
                 Division
               </th>
               <th scope="col" className="p-2">
-                Bill For
+                Bill Type
               </th>
               <th scope="col" className="p-2">
-                Category Type
+                Jal Sansthan Name
               </th>
               <th scope="col" className="p-2">
                 3/18
@@ -184,8 +176,8 @@ function ReportBillForLocalBodies() {
               <td className="p-2">Kanpur</td>
               <td className="p-2">EDC Kanpur</td>
               <td className="p-2">EDD Kanpur</td>
-              <td className="p-2">Nagar Nigam</td>
-              <td className="p-2">Jalkal</td>
+              <td className="p-2">Jal Sansthan</td>
+              <td className="p-2">Kanpur Jal Sansthan</td>
               <td className="p-2">0.00</td>
               <td className="p-2">0.00</td>
               <td className="p-2">0.00</td>
@@ -206,8 +198,8 @@ function ReportBillForLocalBodies() {
               <td className="p-2">Kanpur</td>
               <td className="p-2">EDC Kanpur</td>
               <td className="p-2">EDD Kanpur</td>
-              <td className="p-2">Nagar Nigam</td>
-              <td className="p-2">Jalkal</td>
+              <td className="p-2">Jal Sansthan</td>
+              <td className="p-2">Kanpur Jal Sansthan</td>
               <td className="p-2">0.00</td>
               <td className="p-2">0.00</td>
               <td className="p-2">0.00</td>
@@ -252,4 +244,4 @@ function ReportBillForLocalBodies() {
     </>
   );
 }
-export default ReportBillForLocalBodies;
+export default AdminBillForJalSansthan;

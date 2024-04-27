@@ -1,11 +1,11 @@
-import Header from "../../../component/Header";
-import { select, label, btn } from "../../../utils/tailwindClasses";
+import Header from "../../../../component/Header";
+import { select, label, btn } from "../../../../utils/tailwindClasses";
 
-function ReportBillForLocalBodies() {
+function AdminMonthlyBillForIrrigation() {
   return (
     <>
       <Header
-        title="Search Varified Monthly Bill For Local Bodies"
+        title="Search Verified Monthly Bill for Irrigation"
         action={{
           button: "",
           path: "",
@@ -65,7 +65,7 @@ function ReportBillForLocalBodies() {
           </div>
 
           <div className="relative z-0 w-full col-md-4 mb-4 group">
-            <label className={label}>Bill For</label>
+            <label className={label}>Category Type</label>
             <select className={select}>
               <option defaultValue="">--Select--</option>
               <option defaultValue="1">All</option>
@@ -73,7 +73,7 @@ function ReportBillForLocalBodies() {
           </div>
 
           <div className="relative z-0 w-full col-md-4 mb-4 group">
-            <label className={label}>Category Type</label>
+            <label className={label}>Irrigation Name</label>
             <select className={select}>
               <option defaultValue="">--Select--</option>
               <option defaultValue="1">All</option>
@@ -107,7 +107,7 @@ function ReportBillForLocalBodies() {
                 Division
               </th>
               <th scope="col" className="p-2">
-                Bill For
+                Bill Type
               </th>
               <th scope="col" className="p-2">
                 Category Type
@@ -252,4 +252,4 @@ function ReportBillForLocalBodies() {
     </>
   );
 }
-export default ReportBillForLocalBodies;
+export default AdminMonthlyBillForIrrigation;

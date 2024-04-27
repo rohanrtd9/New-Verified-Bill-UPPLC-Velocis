@@ -14,73 +14,76 @@ function ReportBillForRiverMaster() {
 
       <div className="mt-8 max-w-xxl p-6 bg-gray-200 border border-gray-200 rounded-lg shadow mx-auto">
         <div className="grid md:grid-cols-3 md:gap-6">
+          <div className="relative z-0 w-full col-md-4 mb-4 group">
+            <label className={label}>Financial Year</label>
+            <select className={select}>
+              <option defaultValue="">--Select--</option>
+              <option defaultValue="1">2020-21</option>
+              <option defaultValue="2">2021-22</option>
+              <option defaultValue="3">2022-23</option>
+            </select>
+          </div>
 
-            <div className="relative z-0 w-full col-md-4 mb-4 group">
-              <label  className={label}>Financial Year</label>
-              <select  className={select}>
+          <div className="relative z-0 w-full col-md-4 mb-4 group">
+            <label className={label}>Discom</label>
+            <select className={select}>
               <option defaultValue="">--Select--</option>
-                <option defaultValue="1" >2020-21</option>
-                <option defaultValue="2" >2021-22</option>
-                <option defaultValue="3" >2022-23</option>
-              </select>
-            </div>
-          
-            <div className="relative z-0 w-full col-md-4 mb-4 group">
-              <label  className={label}>Discom</label>
-              <select  className={select}>
-              <option defaultValue="">--Select--</option>
-                <option defaultValue="1">Uttaranchal</option>              
-              </select>
-            </div>
-                  
+              <option defaultValue="1">Uttaranchal</option>
+            </select>
+          </div>
 
-            <div className="relative z-0 w-full col-md-4 mb-4 group">
-              <label  className={label}>Zone</label>
-              <select  className={select}>
+          <div className="relative z-0 w-full col-md-4 mb-4 group">
+            <label className={label}>Zone</label>
+            <select className={select}>
               <option defaultValue="">--Select--</option>
-                <option defaultValue="1">Kanpur</option>
-              </select>
-            </div>
-            
-            <div className="relative z-0 w-full col-md-4 mb-4 group">
-              <label  className={label}>Circle</label>
-              <select  className={select}>
-              <option defaultValue="">--Select--</option>
-                <option defaultValue="1">EDC Kanpur</option>
-              </select>
-            </div>
-            
-            <div className="relative z-0 w-full col-md-3 mb-4 group">
-              <label  className={label}>Division</label>
-              <select  className={select}>
+              <option defaultValue="1">Kanpur</option>
+            </select>
+          </div>
+
+          <div className="relative z-0 w-full col-md-4 mb-4 group">
+            <label className={label}>Circle</label>
+            <select className={select}>
               <option defaultValue="">--Select--</option>
               <option defaultValue="1">EDC Kanpur</option>
-              </select>
-            </div>
-            
-            <div className="relative z-0 w-full col-md-3 mb-4 group">
-              <label  className={label}>Bill Type</label>
-              <select  className={select}>
+            </select>
+          </div>
+
+          <div className="relative z-0 w-full col-md-3 mb-4 group">
+            <label className={label}>Division</label>
+            <select className={select}>
+              <option defaultValue="">--Select--</option>
+              <option defaultValue="1">EDC Kanpur</option>
+            </select>
+          </div>
+
+          <div className="relative z-0 w-full col-md-3 mb-4 group">
+            <label className={label}>Bill Type</label>
+            <select className={select}>
               <option defaultValue="">--Select--</option>
               <option defaultValue="1">All</option>
+            </select>
+          </div>
 
-              </select>
-            </div>
-            
-            <div className="relative z-0 w-full col-md-6 mb-4 group">
-              <label  className={label}>River Pollution Control Unit Master Name</label>
-              <select  className={select}>
+          <div className="relative z-0 w-full col-md-6 mb-4 group">
+            <label className={label}>
+              River Pollution Control Unit Master Name
+            </label>
+            <select className={select}>
               <option defaultValue="">--Select--</option>
-                <option defaultValue="1" >All</option>
-              </select>
-            </div>
+              <option defaultValue="1">All</option>
+            </select>
+          </div>
         </div>
 
         <button className={btn}>Search</button>
-        <button type="button" className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Reset</button>
+        <button
+          type="button"
+          className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+        >
+          Reset
+        </button>
       </div>
 
-      
       <div className="mt-10 relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -100,15 +103,15 @@ function ReportBillForRiverMaster() {
               <th scope="col" className="p-2">
                 Bill Type
               </th>
-            
+
               <th scope="col" className="p-2">
                 3/18
               </th>
               <th scope="col" className="p-2">
-                4/18  
+                4/18
               </th>
               <th scope="col" className="p-2">
-                5/18 
+                5/18
               </th>
               <th scope="col" className="p-2">
                 6/18
@@ -187,7 +190,6 @@ function ReportBillForRiverMaster() {
               <td className="p-2">0.00</td>
               <td className="p-2">0.00</td>
               <td className="p-2">600.00</td>
-
             </tr>
             <tr className="border-b ">
               <td className="p-2">Dakshinanchal</td>
@@ -209,9 +211,7 @@ function ReportBillForRiverMaster() {
               <td className="p-2">0.00</td>
               <td className="p-2">0.00</td>
               <td className="p-2">600.00</td>
-
             </tr>
-
 
             <tr className="bg-gray-200 border-b ">
               <td className="p-2">Total</td>
@@ -233,11 +233,10 @@ function ReportBillForRiverMaster() {
               <td className="p-2">0.00</td>
               <td className="p-2">0.00</td>
               <td className="p-2">1200.00</td>
-
             </tr>
-            </tbody>
-            </table>   
-          </div>
+          </tbody>
+        </table>
+      </div>
     </>
   );
 }

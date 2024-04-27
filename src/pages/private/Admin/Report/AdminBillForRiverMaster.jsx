@@ -1,11 +1,11 @@
-import Header from "../../../component/Header";
-import { select, label, btn } from "../../../utils/tailwindClasses";
+import Header from "../../../../component/Header";
+import { select, input, label, btn } from "../../../../utils/tailwindClasses";
 
-function ReportBillForLocalBodies() {
+function AdminBillForRiverMaster() {
   return (
     <>
       <Header
-        title="Search Varified Monthly Bill For Local Bodies"
+        title="Report River Pollution Control Unit Master"
         action={{
           button: "",
           path: "",
@@ -13,7 +13,7 @@ function ReportBillForLocalBodies() {
       />
 
       <div className="mt-8 max-w-xxl p-6 bg-gray-200 border border-gray-200 rounded-lg shadow mx-auto">
-        <div className="grid md:grid-cols-4 md:gap-6">
+        <div className="grid md:grid-cols-3 md:gap-6">
           <div className="relative z-0 w-full col-md-4 mb-4 group">
             <label className={label}>Financial Year</label>
             <select className={select}>
@@ -48,7 +48,7 @@ function ReportBillForLocalBodies() {
             </select>
           </div>
 
-          <div className="relative z-0 w-full col-md-4 mb-4 group">
+          <div className="relative z-0 w-full col-md-3 mb-4 group">
             <label className={label}>Division</label>
             <select className={select}>
               <option defaultValue="">--Select--</option>
@@ -56,7 +56,7 @@ function ReportBillForLocalBodies() {
             </select>
           </div>
 
-          <div className="relative z-0 w-full col-md-4 mb-4 group">
+          <div className="relative z-0 w-full col-md-3 mb-4 group">
             <label className={label}>Bill Type</label>
             <select className={select}>
               <option defaultValue="">--Select--</option>
@@ -64,16 +64,10 @@ function ReportBillForLocalBodies() {
             </select>
           </div>
 
-          <div className="relative z-0 w-full col-md-4 mb-4 group">
-            <label className={label}>Bill For</label>
-            <select className={select}>
-              <option defaultValue="">--Select--</option>
-              <option defaultValue="1">All</option>
-            </select>
-          </div>
-
-          <div className="relative z-0 w-full col-md-4 mb-4 group">
-            <label className={label}>Category Type</label>
+          <div className="relative z-0 w-full col-md-6 mb-4 group">
+            <label className={label}>
+              River Pollution Control Unit Master Name
+            </label>
             <select className={select}>
               <option defaultValue="">--Select--</option>
               <option defaultValue="1">All</option>
@@ -107,11 +101,9 @@ function ReportBillForLocalBodies() {
                 Division
               </th>
               <th scope="col" className="p-2">
-                Bill For
+                Bill Type
               </th>
-              <th scope="col" className="p-2">
-                Category Type
-              </th>
+
               <th scope="col" className="p-2">
                 3/18
               </th>
@@ -177,14 +169,12 @@ function ReportBillForLocalBodies() {
               <td className="p-2">17</td>
               <td className="p-2">18</td>
               <td className="p-2">19</td>
-              <td className="p-2">20</td>
             </tr>
             <tr className="bg-gray-200 border-b ">
               <td className="p-2">Dakshinanchal</td>
               <td className="p-2">Kanpur</td>
               <td className="p-2">EDC Kanpur</td>
               <td className="p-2">EDD Kanpur</td>
-              <td className="p-2">Nagar Nigam</td>
               <td className="p-2">Jalkal</td>
               <td className="p-2">0.00</td>
               <td className="p-2">0.00</td>
@@ -206,7 +196,6 @@ function ReportBillForLocalBodies() {
               <td className="p-2">Kanpur</td>
               <td className="p-2">EDC Kanpur</td>
               <td className="p-2">EDD Kanpur</td>
-              <td className="p-2">Nagar Nigam</td>
               <td className="p-2">Jalkal</td>
               <td className="p-2">0.00</td>
               <td className="p-2">0.00</td>
@@ -226,7 +215,6 @@ function ReportBillForLocalBodies() {
 
             <tr className="bg-gray-200 border-b ">
               <td className="p-2">Total</td>
-              <td className="p-2"></td>
               <td className="p-2"></td>
               <td className="p-2"></td>
               <td className="p-2"></td>
@@ -252,4 +240,4 @@ function ReportBillForLocalBodies() {
     </>
   );
 }
-export default ReportBillForLocalBodies;
+export default AdminBillForRiverMaster;

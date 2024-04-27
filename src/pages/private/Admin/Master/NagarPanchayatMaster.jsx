@@ -1,12 +1,12 @@
-import Header from "../../../component/Header";
-import { select, input, label, btn } from "../../../utils/tailwindClasses";
-import { Link } from "react-router-dom";
+import Header from "../../../../component/Header";
+import { select, input, label, btn } from "../../../../utils/tailwindClasses";
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
 
-function BillForLocalBodies() {
+function NagarPanchayatMaster() {
   return (
     <>
       <Header
-        title="Varified Monthly Bill For Local Bodies"
+        title="Nagar Panchayat Master"
         action={{
           button: "",
           path: "",
@@ -18,32 +18,35 @@ function BillForLocalBodies() {
         dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 mx-auto"
       >
         <div className="grid md:grid-cols-3 md:gap-6">
-          <div className="relative  z-0 w-full col-md-4 mb-4 group">
-            <input
-              type="text"
-              name="floating_first_name"
-              id="floating_first_name"
-              className={input}
-              placeholder=" "
-              required
-            />
-            <label className={label}>Bill For</label>
-          </div>
           <div className="relative z-0 w-full col-md-4 mb-4 group">
-            <input type="text" className={input} placeholder=" " required />
-            <label className={label}>Local Body Name</label>
+            <label className={label}>Division Name</label>
+            <select id="countries" className={select}>
+              <option defaultValue="">--Select--</option>
+              <option defaultValue="EDD Akbarpur">EDD Akbarpur</option>
+            </select>
           </div>
 
           <div className="relative z-0 w-full col-md-4 mb-4 group">
             <label className={label}>Category Type</label>
             <select id="countries" className={select}>
               <option defaultValue="">--Select--</option>
+              <option defaultValue="Marg Prakash">Marg Prakash</option>
               <option defaultValue="Jalkal">Jalkal</option>
+            </select>
+          </div>
+
+          <div className="relative z-0 w-full col-md-4 mb-4 group">
+            <label className={label}>Nagar Panchayat Name</label>
+            <select id="countries" className={select}>
+              <option defaultValue="">--Select--</option>
+              <option defaultValue="Aligarh">Aligarh</option>
+              <option defaultValue="Agra">Agra</option>
+              <option defaultValue="Allahabad">Allahabad</option>
             </select>
           </div>
         </div>
 
-        <button className={btn}>Search</button>
+        <button className={btn}>Save</button>
         <button
           type="button"
           className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
@@ -60,32 +63,19 @@ function BillForLocalBodies() {
                 S.No.
               </th>
               <th scope="col" className="px-6 py-3">
-                Book No
+                Division Name
               </th>
               <th scope="col" className="px-6 py-3">
-                Name
+                Category Type
               </th>
               <th scope="col" className="px-6 py-3">
-                Address
+                Nagar Panchayat Name
               </th>
               <th scope="col" className="px-6 py-3">
-                Load
+                Edit
               </th>
               <th scope="col" className="px-6 py-3">
-                ST
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Metering Status
-              </th>
-
-              <th scope="col" className="px-6 py-3">
-                Meter No
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Total Amount
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Add New
+                Delate
               </th>
             </tr>
           </thead>
@@ -97,20 +87,32 @@ function BillForLocalBodies() {
               >
                 1
               </td>
-              <td className="px-6 py-4">678</td>
-              <td className="px-6 py-4">5654</td>
-              <td className="px-6 py-4">UPPCL</td>
-              <td className="px-6 py-4">Lucknow</td>
-              <td className="px-6 py-4">678.67</td>
-              <td className="px-6 py-4">678.67</td>
-              <td className="px-6 py-4">678.67</td>
-              <td className="px-6 py-4">678.67</td>
+              <td className="px-6 py-4">EDD Akbarpur</td>
+              <td className="px-6 py-4">Marg Prakash</td>
+              <td className="px-6 py-4">Allahabad</td>
               <td className="px-6 py-4">
-                {" "}
-                <Link to="/AddNewBill">
-                  {" "}
-                  <button className={btn}>Add Bill</button>
-                </Link>
+                <PencilSquareIcon className="h-5 w-5 ms-2" />
+              </td>
+              <td className="px-6 py-4">
+                <TrashIcon className="h-5 w-5" />{" "}
+              </td>
+            </tr>
+
+            <tr className="bg-white border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+              <td
+                scope="row"
+                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              >
+                2
+              </td>
+              <td className="px-6 py-4">EDD Akbarpur</td>
+              <td className="px-6 py-4">Marg Prakash</td>
+              <td className="px-6 py-4">Agra</td>
+              <td className="px-6 py-4">
+                <PencilSquareIcon className="h-5 w-5 ms-2" />
+              </td>
+              <td className="px-6 py-4">
+                <TrashIcon className="h-5 w-5" />{" "}
               </td>
             </tr>
           </tbody>
@@ -119,4 +121,4 @@ function BillForLocalBodies() {
     </>
   );
 }
-export default BillForLocalBodies;
+export default NagarPanchayatMaster;

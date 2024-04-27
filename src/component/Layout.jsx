@@ -1,5 +1,6 @@
-import React from "react";
+import PropTypes from "prop-types";
 import { Sidebar } from "./Sidebar";
+
 const Layout = ({ children }) => {
   return (
     <div className="flex h-screen">
@@ -9,6 +10,10 @@ const Layout = ({ children }) => {
       <div className="w-3/4 bg-white overflow-y-auto p-4">{children}</div>
     </div>
   );
+};
+
+Layout.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export default Layout;

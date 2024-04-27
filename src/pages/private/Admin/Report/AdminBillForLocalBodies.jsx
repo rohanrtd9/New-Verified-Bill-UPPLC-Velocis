@@ -1,11 +1,11 @@
-import Header from "../../../component/Header";
-import { select, label, btn } from "../../../utils/tailwindClasses";
+import Header from "../../../../component/Header";
+import { select, label, btn } from "../../../../utils/tailwindClasses";
 
-function ReportBillForLocalBodies() {
+function AdminBillForLocalBodies() {
   return (
     <>
       <Header
-        title="Search Varified Monthly Bill For Local Bodies"
+        title="Verified Monthly Bill Local Body"
         action={{
           button: "",
           path: "",
@@ -252,4 +252,4 @@ function ReportBillForLocalBodies() {
     </>
   );
 }
-export default ReportBillForLocalBodies;
+export default AdminBillForLocalBodies;
