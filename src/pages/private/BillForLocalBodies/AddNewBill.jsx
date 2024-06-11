@@ -14,7 +14,7 @@ function AddNewBill() {
         }}
       />
 
-      <div className="mt-8 max-w-xxl p-6 bg-gray-200 border border-gray-200 rounded-lg shadow mx-auto">
+      <div className="mt-8 max-w-xxl p-6  border border-gray-200 rounded-lg shadow mx-auto">
         <div className="grid md:grid-cols-4 md:gap-6">
           <div className="relative  z-0 w-full col-md-4 mb-4 group">
             <input
@@ -161,7 +161,7 @@ function AddNewBill() {
             </tr>
           </thead>
           <tbody>
-            <tr className="bg-gray-200 border-b ">
+            <tr className="border-b ">
               <td
                 scope="row"
                 className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"

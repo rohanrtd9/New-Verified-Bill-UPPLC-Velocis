@@ -16,14 +16,14 @@ function Header({ title, action }) {
             <button className={btn}>{button}</button>
           </Link>
         )}
-        <button
+        {/* <button
           className={btn}
           onClick={() =>
             setUserType(userType === "public" ? "admin" : "public")
           }
         >
           Change {userType}
-        </button>
+        </button> */}
       </div>
       <hr />
     </div>

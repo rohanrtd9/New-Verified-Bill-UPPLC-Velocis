@@ -14,7 +14,7 @@ function BillForLocalBodies() {
       />
 
       <div
-        className="mt-8 max-w-xxl p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 
+        className="mt-8 max-w-xxl p-6 bg-white border border-gray-200 rounded-lg shadow  
         dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 mx-auto"
       >
         <div className="grid md:grid-cols-3 md:gap-6">
@@ -90,7 +90,7 @@ function BillForLocalBodies() {
             </tr>
           </thead>
           <tbody>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700  dark:hover:bg-gray-600">
               <td
                 scope="row"
                 className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -109,7 +109,9 @@ function BillForLocalBodies() {
                 {" "}
                 <Link to="/AddNewBill">
                   {" "}
-                  <button className={btn}>Add Bill</button>
+                  <button className={btn} style={{ width: "100px" }}>
+                    Add Bill
+                  </button>
                 </Link>
               </td>
             </tr>

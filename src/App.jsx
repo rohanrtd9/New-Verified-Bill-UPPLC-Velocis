@@ -3,6 +3,7 @@ import "./App.css";
 import Layout from "./component/Layout";
 import Dashboard from "./pages/private/dashboard";
 import NewConnection from "./pages/private/connection/NewConnection";
+
 import BillForLocalBodies from "./pages/private/BillForLocalBodies/BillForLocalBodies";
 import AddNewBill from "./pages/private/BillForLocalBodies/AddNewBill";
 import VarifyBill from "./pages/private/BillForLocalBodies/VarifyBill";
@@ -48,6 +49,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/NewConnection" element={<NewConnection />} />
+
             <Route
               path="/BillForLocalBodies"
               element={<BillForLocalBodies />}

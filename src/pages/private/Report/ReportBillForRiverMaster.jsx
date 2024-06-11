@@ -12,7 +12,7 @@ function ReportBillForRiverMaster() {
         }}
       />
 
-      <div className="mt-8 max-w-xxl p-6 bg-gray-200 border border-gray-200 rounded-lg shadow mx-auto">
+      <div className="mt-8 max-w-xxl p-6 border border-gray-200 rounded-lg shadow mx-auto">
         <div className="grid md:grid-cols-3 md:gap-6">
           <div className="relative z-0 w-full col-md-4 mb-4 group">
             <label className={label}>Financial Year</label>
@@ -170,7 +170,7 @@ function ReportBillForRiverMaster() {
               <td className="p-2">18</td>
               <td className="p-2">19</td>
             </tr>
-            <tr className="bg-gray-200 border-b ">
+            <tr className="border-b ">
               <td className="p-2">Dakshinanchal</td>
               <td className="p-2">Kanpur</td>
               <td className="p-2">EDC Kanpur</td>
@@ -213,7 +213,7 @@ function ReportBillForRiverMaster() {
               <td className="p-2">600.00</td>
             </tr>
 
-            <tr className="bg-gray-200 border-b ">
+            <tr className="border-b">
               <td className="p-2">Total</td>
               <td className="p-2"></td>
               <td className="p-2"></td>
