@@ -12,7 +12,7 @@ function NewConnection() {
         }}
       />
 
-      <div className="mt-8 max-w-xxl p-6  border border-gray-200 rounded-lg shadow mx-auto">
+      <div className="mt-8 max-w-xxl p-6 border border-gray-200 rounded-lg shadow mx-auto">
         <div className="grid md:grid-cols-2 md:gap-6">
           <div className="relative z-0 w-full col-md-4 mb-4 group">
             <input
