@@ -48,6 +48,7 @@ function NewConnection() {
               value={connectionData.billFor}
               className={input}
               required
+              placeholder=" "
             />
             <label className={label}>Bill For</label>
           </div>
@@ -64,6 +65,7 @@ function NewConnection() {
               value={connectionData.connectionDate}
               className={input}
               required
+              placeholder=" "
             />
             <label className={label}>Date Of Connection</label>
           </div>
@@ -78,6 +80,7 @@ function NewConnection() {
               value={connectionData.bookNo}
               className={input}
               required
+              placeholder=" "
             />
             <label className={label}>Book No</label>
           </div>
@@ -94,6 +97,7 @@ function NewConnection() {
               value={connectionData.scNo}
               className={input}
               required
+              placeholder=" "
             />
             <label className={label}>SC No</label>
           </div>
@@ -113,6 +117,7 @@ function NewConnection() {
                   })
                 }
                 value="Online"
+                placeholder=" "
                 name="inline-radio-group"
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
               />
@@ -131,6 +136,7 @@ function NewConnection() {
                   })
                 }
                 value="offline"
+                placeholder=" "
                 name="inline-radio-group"
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
               />
@@ -150,6 +156,7 @@ function NewConnection() {
               value={connectionData.acId}
               className={input}
               required
+              placeholder=" "
             />
             <label className={label}>Account ID</label>
           </div>
@@ -181,6 +188,7 @@ function NewConnection() {
               value={connectionData.address}
               className={input}
               required
+              placeholder=" "
             />
             <label className={label}>Address</label>
           </div>
@@ -199,6 +207,7 @@ function NewConnection() {
                   })
                 }
                 value="RDPDRP"
+                placeholder=" "
                 name="billing-type"
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
               />
@@ -217,6 +226,7 @@ function NewConnection() {
                   })
                 }
                 value="Non-RDPDRP"
+                placeholder=" "
                 name="billing-type"
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
               />
@@ -235,6 +245,7 @@ function NewConnection() {
               }
               value={connectionData.load}
               className={input}
+              placeholder=" "
               required
             />
             <label className={label}>Load</label>
@@ -249,6 +260,7 @@ function NewConnection() {
                 setConnectionData({ ...connectionData, st: e.target.value })
               }
               value={connectionData.st}
+              placeholder=" "
               required
             />
             <label className={label}>ST</label>
@@ -283,6 +295,7 @@ function NewConnection() {
               }
               value={connectionData.meterMake}
               className={input}
+              placeholder=" "
               required
             />
             <label className={label}>Meter Make</label>
@@ -296,6 +309,7 @@ function NewConnection() {
               }
               className={input}
               value={connectionData.mf}
+              placeholder=" "
               required
             />
             <label className={label}>MF</label>
