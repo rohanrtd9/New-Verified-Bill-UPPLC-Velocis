@@ -1,3 +1,1 @@
-// Your API Url put here.
-
-export const apiUrl = "";
+export const apiUrl = "http://192.168.1.24:5000/api/";
