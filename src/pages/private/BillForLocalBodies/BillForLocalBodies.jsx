@@ -1,8 +1,118 @@
+import { useEffect, useState } from "react";
 import Header from "../../../component/Header";
 import { select, input, label, btn } from "../../../utils/tailwindClasses";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { apiUrl } from "../../../constant";
 
 function BillForLocalBodies() {
+  const [billForData, setBillForData] = useState([]);
+  const [categoryTypeData, setCategoryTypeData] = useState([]);
+  const [localBodyNameData, setLocalBodyNameData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [connectionData, setConnectionData] = useState({
+    billFor: "",
+    categoryType: "",
+    localBodyName: "",
+  });
+  const [connectionList, setConnectionList] = useState([]);
+
+  useEffect(() => {
+    getBillFor();
+  }, []);
+  useEffect(() => {
+    if (connectionData.categoryType !== "") {
+      getLocalBodyName();
+    }
+  }, [connectionData.categoryType]);
+
+  useEffect(() => {
+    if (connectionData.billFor !== "") {
+      getCtegoryType();
+    }
+  }, [connectionData.billFor]);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setConnectionData((prev) => ({ ...prev, [name]: value }));
+  };
+  const getBillFor = () => {
+    axios
+      .post(`${apiUrl}list-body-type`)
+      .then((response) => {
+        console.log("Response:", response);
+        if (response?.data?.records.length > 0) {
+          setBillForData(response?.data?.records);
+        }
+      })
+      .catch((error) => {
+        console.error(
+          "Error:",
+          error.response ? error.response.data : error.message
+        );
+      });
+  };
+  const getCtegoryType = () => {
+    const data = {
+      divisionName: "EDD ANAND NAGAR",
+    };
+    axios
+      .post(`${apiUrl}list-category`, data)
+      .then((response) => {
+        console.log("Response:", response);
+        if (response?.data?.records.length > 0) {
+          setCategoryTypeData(response.data.records);
+        }
+      })
+      .catch((error) => {
+        console.error(
+          "Error:",
+          error.response ? error.response.data : error.message
+        );
+      });
+  };
+  const getLocalBodyName = () => {
+    const data = {
+      bodyType: connectionData.billFor,
+    };
+    axios
+      .post(`${apiUrl}list-body-name`, data)
+      .then((response) => {
+        console.log("Response:", response);
+        if (response?.data?.records.length > 0) {
+          setLocalBodyNameData(response.data.records);
+        }
+      })
+      .catch((error) => {
+        console.error(
+          "Error:",
+          error.response ? error.response.data : error.message
+        );
+      });
+  };
+  const search = () => {
+    const data = {
+      billFor: connectionData.billFor,
+      categoryBasedName: connectionData.localBodyName,
+      categoryType: connectionData.categoryType,
+      connectionID: "",
+    };
+    axios
+      .post(`${apiUrl}list-connection`, data)
+      .then((response) => {
+        console.log("Response:", response);
+        if (response?.data?.connections.length > 0) {
+          setConnectionList(response.data.connections);
+        } else {
+          setConnectionList([]);
+        }
+      })
+      .catch((error) => {
+        console.error(
+          "Error:",
+          error.response ? error.response.data : error.message
+        );
+      });
+  };
   return (
     <>
       <Header
@@ -18,32 +128,66 @@ function BillForLocalBodies() {
         dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 mx-auto"
       >
         <div className="grid md:grid-cols-3 md:gap-6">
-          <div className="relative  z-0 w-full col-md-4 mb-4 group">
-            <input
-              type="text"
-              name="floating_first_name"
-              id="floating_first_name"
-              className={input}
-              placeholder=" "
-              required
-            />
+          <div className="relative z-0 w-full col-md-4 mb-4 group">
+            <select
+              className={select}
+              name="billFor"
+              onChange={handleChange}
+              value={connectionData.billFor}
+            >
+              <option value={""}>Select Bill for</option>
+              {billForData.length > 0 &&
+                billForData.map((bill) => (
+                  <option key={bill} value={bill}>
+                    {bill}
+                  </option>
+                ))}
+            </select>
             <label className={label}>Bill For</label>
           </div>
-          <div className="relative z-0 w-full col-md-4 mb-4 group">
-            <input type="text" className={input} placeholder=" " required />
-            <label className={label}>Local Body Name</label>
-          </div>
-
-          <div className="relative z-0 w-full col-md-4 mb-4 group">
-            <label className={label}>Category Type</label>
-            <select id="countries" className={select}>
-              <option defaultValue="">--Select--</option>
-              <option defaultValue="Jalkal">Jalkal</option>
-            </select>
-          </div>
+          {connectionData.billFor !== "" && (
+            <>
+              <div className="relative z-0 w-full col-md-4 mb-4 group">
+                <select
+                  className={select}
+                  name="categoryType"
+                  onChange={handleChange}
+                  value={connectionData.categoryType}
+                >
+                  <option value={""}>Select Category Type</option>
+                  {categoryTypeData.length > 0 &&
+                    categoryTypeData.map((category) => (
+                      <option key={category} value={category}>
+                        {category}
+                      </option>
+                    ))}
+                </select>
+                <label className={label}>Category Type</label>
+              </div>
+              <div className="relative z-0 w-full col-md-4 mb-4 group">
+                <select
+                  className={select}
+                  name="localBodyName"
+                  onChange={handleChange}
+                  value={connectionData.localBodyName}
+                >
+                  <option value={""}>Select Local Body Name</option>
+                  {localBodyNameData.length > 0 &&
+                    localBodyNameData.map((local) => (
+                      <option value={local} key={local}>
+                        {local}
+                      </option>
+                    ))}
+                </select>
+                <label className={label}>Local Body Name</label>
+              </div>
+            </>
+          )}
         </div>
 
-        <button className={btn}>Search</button>
+        <button className={btn} onClick={search}>
+          Search
+        </button>
         <button
           type="button"
           className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
@@ -53,8 +197,8 @@ function BillForLocalBodies() {
       </div>
 
       <div className="mt-10 relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <table className="w-full text-sm text-left rtl:text-right text-gray-500">
+          <thead className="text-xs text-gray-700 bg-gray-50">
             <tr>
               <th scope="col" className="px-6 py-3">
                 S.No.
@@ -90,31 +234,30 @@ function BillForLocalBodies() {
             </tr>
           </thead>
           <tbody>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700  dark:hover:bg-gray-600">
-              <td
-                scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-              >
-                1
-              </td>
-              <td className="px-6 py-4">678</td>
-              <td className="px-6 py-4">5654</td>
-              <td className="px-6 py-4">UPPCL</td>
-              <td className="px-6 py-4">Lucknow</td>
-              <td className="px-6 py-4">678.67</td>
-              <td className="px-6 py-4">678.67</td>
-              <td className="px-6 py-4">678.67</td>
-              <td className="px-6 py-4">678.67</td>
-              <td className="px-6 py-4">
-                {" "}
-                <Link to="/AddNewBill">
-                  {" "}
-                  <button className={btn} style={{ width: "100px" }}>
-                    Add Bill
-                  </button>
-                </Link>
-              </td>
-            </tr>
+            {connectionList.length > 0
+              ? connectionList.map((connection, index) => (
+                  <tr className="bg-white border-b" key={connection._id}>
+                    <td className="px-6 py-4">{index + 1}</td>
+                    <td className="px-6 py-4">{connection.bookNo}</td>
+                    <td className="px-6 py-4">{connection.name}</td>
+                    <td className="px-6 py-4">{connection.address}</td>
+                    <td className="px-6 py-4">{connection.load}</td>
+                    <td className="px-6 py-4">{connection.st}</td>
+                    <td className="px-6 py-4">{connection.meterStatus}</td>
+                    <td className="px-6 py-4">{connection.meterNo}</td>
+                    <td className="px-6 py-4">NA</td>
+                    <td className="px-6 py-4">
+                      {" "}
+                      <Link to="/AddNewBill">
+                        {" "}
+                        <button className={btn} style={{ width: "100px" }}>
+                          Add Bill
+                        </button>
+                      </Link>
+                    </td>
+                  </tr>
+                ))
+              : "no record"}
           </tbody>
         </table>
       </div>

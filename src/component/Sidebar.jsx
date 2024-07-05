@@ -70,7 +70,7 @@ export function Sidebar() {
               </ListItem>
               <AccordionBody className="py-1">
                 <List className="p-0">
-                  <NavLink to="/NewConnection">
+                  <NavLink to="/NewConnection/add">
                     <ListItem>
                       <ListItemPrefix>
                         <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />

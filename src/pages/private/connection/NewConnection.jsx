@@ -4,13 +4,11 @@ import { btn, input, label, select } from "../../../utils/tailwindClasses";
 import axios from "axios";
 import { apiUrl } from "../../../constant";
 import Loader from "../../../component/Loader";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function NewConnection() {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
   const { id } = useParams();
-  console.log(id);
   const [billForData, setBillForData] = useState([]);
   const [categoryTypeData, setCategoryTypeData] = useState([]);
   const [localBodyNameData, setLocalBodyNameData] = useState([]);
