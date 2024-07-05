@@ -1,7 +1,28 @@
+import { useState } from "react";
 import Header from "../../../component/Header";
 import { btn, input, label } from "../../../utils/tailwindClasses";
 
 function NewConnection() {
+  const [connectionData, setConnectionData] = useState({
+    billFor: "",
+    connectionDate: "",
+    bookNo: "",
+    scNo: "",
+    billingMode: "",
+    acId: "",
+    name: "",
+    address: "",
+    billingType: "",
+    load: "",
+    st: "",
+    meterNo: "",
+    meterMake: "",
+    mf: "",
+  });
+  const saveNewConnection = () => {
+    alert("clicked save");
+    console.log("data: ", connectionData);
+  };
   return (
     <>
       <Header
@@ -18,9 +39,14 @@ function NewConnection() {
             <input
               type="text"
               name="floating_first_name"
-              id="floating_first_name"
+              onChange={(e) =>
+                setConnectionData({
+                  ...connectionData,
+                  billFor: e.target.value,
+                })
+              }
+              value={connectionData.billFor}
               className={input}
-              placeholder=" "
               required
             />
             <label className={label}>Bill For</label>
@@ -29,9 +55,14 @@ function NewConnection() {
             <input
               type="date"
               name="floating_last_name"
-              id="floating_last_name"
+              onChange={(e) =>
+                setConnectionData({
+                  ...connectionData,
+                  connectionDate: e.target.value,
+                })
+              }
+              value={connectionData.connectionDate}
               className={input}
-              placeholder=" "
               required
             />
             <label className={label}>Date Of Connection</label>
@@ -41,9 +72,11 @@ function NewConnection() {
             <input
               type="text"
               name="floating_first_name"
-              id="floating_first_name"
+              onChange={(e) =>
+                setConnectionData({ ...connectionData, bookNo: e.target.value })
+              }
+              value={connectionData.bookNo}
               className={input}
-              placeholder=" "
               required
             />
             <label className={label}>Book No</label>
@@ -52,9 +85,14 @@ function NewConnection() {
             <input
               type="text"
               name="floating_last_name"
-              id="floating_last_name"
+              onChange={(e) =>
+                setConnectionData({
+                  ...connectionData,
+                  scNo: e.target.value,
+                })
+              }
+              value={connectionData.scNo}
               className={input}
-              placeholder=" "
               required
             />
             <label className={label}>SC No</label>
@@ -68,7 +106,13 @@ function NewConnection() {
               <input
                 id="inline-radio"
                 type="radio"
-                value=""
+                onChange={(e) =>
+                  setConnectionData({
+                    ...connectionData,
+                    billingMode: e.target.value,
+                  })
+                }
+                value="Online"
                 name="inline-radio-group"
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
               />
@@ -80,7 +124,13 @@ function NewConnection() {
               <input
                 id="inline-2-radio"
                 type="radio"
-                value=""
+                onChange={(e) =>
+                  setConnectionData({
+                    ...connectionData,
+                    billingMode: e.target.value,
+                  })
+                }
+                value="offline"
                 name="inline-radio-group"
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
               />
@@ -94,9 +144,11 @@ function NewConnection() {
             <input
               type="text"
               name="floating_last_name"
-              id="floating_last_name"
+              onChange={(e) =>
+                setConnectionData({ ...connectionData, acId: e.target.value })
+              }
+              value={connectionData.acId}
               className={input}
-              placeholder=" "
               required
             />
             <label className={label}>Account ID</label>
@@ -105,8 +157,11 @@ function NewConnection() {
           <div className="relative z-0 w-full col-md-4 mb-4 group">
             <input
               type="text"
-              name="floating_first_name"
-              id="floating_first_name"
+              name="floating_last_name"
+              onChange={(e) =>
+                setConnectionData({ ...connectionData, name: e.target.value })
+              }
+              value={connectionData.name}
               className={input}
               placeholder=" "
               required
@@ -117,9 +172,14 @@ function NewConnection() {
             <input
               type="text"
               name="floating_last_name"
-              id="floating_last_name"
+              onChange={(e) =>
+                setConnectionData({
+                  ...connectionData,
+                  address: e.target.value,
+                })
+              }
+              value={connectionData.address}
               className={input}
-              placeholder=" "
               required
             />
             <label className={label}>Address</label>
@@ -132,7 +192,13 @@ function NewConnection() {
               <input
                 id="inline-radio"
                 type="radio"
-                value=""
+                onChange={(e) =>
+                  setConnectionData({
+                    ...connectionData,
+                    billingType: e.target.value,
+                  })
+                }
+                value="RDPDRP"
                 name="billing-type"
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
               />
@@ -144,7 +210,13 @@ function NewConnection() {
               <input
                 id="inline-2-radio"
                 type="radio"
-                value=""
+                onChange={(e) =>
+                  setConnectionData({
+                    ...connectionData,
+                    billingType: e.target.value,
+                  })
+                }
+                value="Non-RDPDRP"
                 name="billing-type"
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
               />
@@ -158,9 +230,11 @@ function NewConnection() {
             <input
               type="text"
               name="floating_last_name"
-              id="floating_last_name"
+              onChange={(e) =>
+                setConnectionData({ ...connectionData, load: e.target.value })
+              }
+              value={connectionData.load}
               className={input}
-              placeholder=" "
               required
             />
             <label className={label}>Load</label>
@@ -170,9 +244,11 @@ function NewConnection() {
             <input
               type="text"
               name="floating_first_name"
-              id="floating_first_name"
               className={input}
-              placeholder=" "
+              onChange={(e) =>
+                setConnectionData({ ...connectionData, st: e.target.value })
+              }
+              value={connectionData.st}
               required
             />
             <label className={label}>ST</label>
@@ -181,7 +257,13 @@ function NewConnection() {
             <input
               type="text"
               name="floating_last_name"
-              id="floating_last_name"
+              onChange={(e) =>
+                setConnectionData({
+                  ...connectionData,
+                  meterNo: e.target.value,
+                })
+              }
+              value={connectionData.meterNo}
               className={input}
               placeholder=" "
               required
@@ -193,9 +275,14 @@ function NewConnection() {
             <input
               type="text"
               name="floating_first_name"
-              id="floating_first_name"
+              onChange={(e) =>
+                setConnectionData({
+                  ...connectionData,
+                  meterMake: e.target.value,
+                })
+              }
+              value={connectionData.meterMake}
               className={input}
-              placeholder=" "
               required
             />
             <label className={label}>Meter Make</label>
@@ -204,15 +291,19 @@ function NewConnection() {
             <input
               type="text"
               name="floating_last_name"
-              id="floating_last_name"
+              onChange={(e) =>
+                setConnectionData({ ...connectionData, mf: e.target.value })
+              }
               className={input}
-              placeholder=" "
+              value={connectionData.mf}
               required
             />
             <label className={label}>MF</label>
           </div>
         </div>
-        <button className={btn}>Submit</button>
+        <button className={btn} onClick={saveNewConnection}>
+          Submit
+        </button>
         <button
           type="button"
           className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
