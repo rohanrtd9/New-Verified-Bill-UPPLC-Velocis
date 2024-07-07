@@ -26,7 +26,7 @@ function NewConnection() {
     name: "",
     address: "",
     billingType: "RDPDRP",
-    load: 0,
+    load: "",
     st: "",
     meterStatus: "Metered",
     meterNo: "",
@@ -333,7 +333,7 @@ function NewConnection() {
               type="date"
               name="connectionDate"
               onChange={handleChange}
-              value={connectionData.connectionDate}
+              value={formatDate(connectionData.connectionDate)}
               className={input}
               required
               placeholder=" "
@@ -463,6 +463,7 @@ function NewConnection() {
                   onChange={handleChange}
                   value="Non-RDPDRP"
                   placeholder=" "
+                  checked={connectionData.billingType === "Non-RDPDRP"}
                   name="billingType"
                   className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                 />
@@ -508,6 +509,7 @@ function NewConnection() {
                   type="radio"
                   onChange={handleChange}
                   value="Un-Metered"
+                  checked={connectionData.meterStatus === "Un-Metered"}
                   placeholder=" "
                   name="meterStatus"
                   className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"

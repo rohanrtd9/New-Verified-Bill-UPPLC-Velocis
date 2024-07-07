@@ -4,6 +4,7 @@ import { select, input, label, btn } from "../../../utils/tailwindClasses";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { apiUrl } from "../../../constant";
+import Loader from "../../../component/Loader";
 
 function BillForLocalBodies() {
   const [billForData, setBillForData] = useState([]);
@@ -15,6 +16,7 @@ function BillForLocalBodies() {
     categoryType: "",
     localBodyName: "",
   });
+  const [billType, setBillType] = useState("");
   const [connectionList, setConnectionList] = useState([]);
 
   useEffect(() => {
@@ -115,6 +117,7 @@ function BillForLocalBodies() {
   };
   return (
     <>
+      {loading && <Loader />}
       <Header
         title="Varified Monthly Bill For Local Bodies"
         action={{
@@ -128,6 +131,23 @@ function BillForLocalBodies() {
         dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 mx-auto"
       >
         <div className="grid md:grid-cols-3 md:gap-6">
+          <div className="relative z-0 w-full col-md-4 mb-4 group">
+            <select
+              className={select}
+              name="billFor"
+              onChange={handleChange}
+              value={connectionData.billFor}
+            >
+              <option value={""}>Select Institution</option>
+              {billForData.length > 0 &&
+                billForData.map((bill) => (
+                  <option key={bill} value={bill}>
+                    {bill}
+                  </option>
+                ))}
+            </select>
+            <label className={label}>Institutions</label>
+          </div>
           <div className="relative z-0 w-full col-md-4 mb-4 group">
             <select
               className={select}
@@ -185,7 +205,7 @@ function BillForLocalBodies() {
           )}
         </div>
 
-        <button className={btn} onClick={search}>
+        <button className={btn} onClick={search} disabled={loading}>
           Search
         </button>
         <button

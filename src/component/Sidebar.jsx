@@ -120,11 +120,11 @@ export function Sidebar() {
                       <ListItemPrefix>
                         <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                       </ListItemPrefix>
-                      Varified Monthly Bill for Local Bodies
+                      Varified Monthly Bill
                     </ListItem>
                   </NavLink>
 
-                  <NavLink
+                  {/* <NavLink
                     to="/BillForIrrigation"
                     className={
                       pathname === "/AddNewBillForIrrigation" ||
@@ -174,7 +174,7 @@ export function Sidebar() {
                       </ListItemPrefix>
                       Varified Monthly Bill for Jal Sansthan
                     </ListItem>
-                  </NavLink>
+                  </NavLink> */}
 
                   <NavLink
                     to="/AddConsolidatedSummary"

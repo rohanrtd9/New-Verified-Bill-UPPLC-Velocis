@@ -161,7 +161,9 @@ function ListConnections() {
                   <td className="p-2">{connection.bookNo}</td>
                   <td className="p-2">{connection.scNo}</td>
                   <td className="p-2">{connection.billingMode}</td>
-                  <td className="p-2">{connection.accountID}</td>
+                  <td className="p-2">
+                    {connection.accountID !== "" ? connection.accountID : "NA"}
+                  </td>
                   <td className="p-2">{connection.name}</td>
                   <td className="p-2">{connection.address}</td>
                   <td className="p-2">{connection.billingType}</td>
