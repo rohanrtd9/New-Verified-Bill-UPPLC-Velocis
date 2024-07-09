@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { apiUrl } from "../../../constant";
 import Loader from "../../../component/Loader";
+import { useUserContext } from "../../../utils/userContext";
 
 function BillForLocalBodies() {
   const [billForData, setBillForData] = useState([]);
@@ -16,12 +17,14 @@ function BillForLocalBodies() {
     categoryType: "",
     localBodyName: "",
   });
-  const [billType, setBillType] = useState("");
+  const { token } = useUserContext();
   const [connectionList, setConnectionList] = useState([]);
 
   useEffect(() => {
-    getBillFor();
-  }, []);
+    if (token !== "") {
+      getBillFor();
+    }
+  }, [token]);
   useEffect(() => {
     if (connectionData.categoryType !== "") {
       getLocalBodyName();
@@ -39,7 +42,12 @@ function BillForLocalBodies() {
   };
   const getBillFor = () => {
     axios
-      .post(`${apiUrl}list-body-type`)
+      .post(`${apiUrl}list-billfor`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         console.log("Response:", response);
         if (response?.data?.records.length > 0) {
@@ -55,10 +63,16 @@ function BillForLocalBodies() {
   };
   const getCtegoryType = () => {
     const data = {
-      divisionName: "EDD ANAND NAGAR",
+      billFor: connectionData.billFor,
+      masters: 0,
     };
     axios
-      .post(`${apiUrl}list-category`, data)
+      .post(`${apiUrl}list-category`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         console.log("Response:", response);
         if (response?.data?.records.length > 0) {
@@ -74,10 +88,16 @@ function BillForLocalBodies() {
   };
   const getLocalBodyName = () => {
     const data = {
-      bodyType: connectionData.billFor,
+      categoryType: connectionData.categoryType,
+      billFor: connectionData.billFor,
     };
     axios
-      .post(`${apiUrl}list-body-name`, data)
+      .post(`${apiUrl}list-sub-category`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         console.log("Response:", response);
         if (response?.data?.records.length > 0) {
@@ -99,7 +119,12 @@ function BillForLocalBodies() {
       connectionID: "",
     };
     axios
-      .post(`${apiUrl}list-connection`, data)
+      .post(`${apiUrl}list-connection`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         console.log("Response:", response);
         if (response?.data?.connections.length > 0) {
@@ -138,28 +163,11 @@ function BillForLocalBodies() {
               onChange={handleChange}
               value={connectionData.billFor}
             >
-              <option value={""}>Select Institution</option>
-              {billForData.length > 0 &&
-                billForData.map((bill) => (
-                  <option key={bill} value={bill}>
-                    {bill}
-                  </option>
-                ))}
-            </select>
-            <label className={label}>Institutions</label>
-          </div>
-          <div className="relative z-0 w-full col-md-4 mb-4 group">
-            <select
-              className={select}
-              name="billFor"
-              onChange={handleChange}
-              value={connectionData.billFor}
-            >
               <option value={""}>Select Bill for</option>
               {billForData.length > 0 &&
                 billForData.map((bill) => (
-                  <option key={bill} value={bill}>
-                    {bill}
+                  <option key={bill._id} value={bill.billFor}>
+                    {bill.billFor}
                   </option>
                 ))}
             </select>
@@ -204,7 +212,6 @@ function BillForLocalBodies() {
             </>
           )}
         </div>
-
         <button className={btn} onClick={search} disabled={loading}>
           Search
         </button>
@@ -268,7 +275,7 @@ function BillForLocalBodies() {
                     <td className="px-6 py-4">NA</td>
                     <td className="px-6 py-4">
                       {" "}
-                      <Link to="/AddNewBill">
+                      <Link to={`/AddNewBill/${connection._id}`}>
                         {" "}
                         <button className={btn} style={{ width: "100px" }}>
                           Add Bill

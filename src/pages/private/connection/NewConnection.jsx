@@ -5,6 +5,7 @@ import axios from "axios";
 import { apiUrl } from "../../../constant";
 import Loader from "../../../component/Loader";
 import { useNavigate, useParams } from "react-router-dom";
+import { useUserContext } from "../../../utils/userContext";
 
 function NewConnection() {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ function NewConnection() {
   const [categoryTypeData, setCategoryTypeData] = useState([]);
   const [localBodyNameData, setLocalBodyNameData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const { token } = useUserContext();
 
   const [connectionData, setConnectionData] = useState({
     billFor: "",
@@ -50,7 +52,12 @@ function NewConnection() {
 
   const getBillFor = () => {
     axios
-      .post(`${apiUrl}list-body-type`)
+      .post(`${apiUrl}list-billfor`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         console.log("Response:", response);
         if (response?.data?.records.length > 0) {
@@ -66,10 +73,16 @@ function NewConnection() {
   };
   const getCtegoryType = () => {
     const data = {
-      divisionName: "EDD ANAND NAGAR",
+      billFor: connectionData.billFor,
+      masters: 0,
     };
     axios
-      .post(`${apiUrl}list-category`, data)
+      .post(`${apiUrl}list-category`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         console.log("Response:", response);
         if (response?.data?.records.length > 0) {
@@ -83,12 +96,19 @@ function NewConnection() {
         );
       });
   };
+
   const getLocalBodyName = () => {
     const data = {
-      bodyType: connectionData.billFor,
+      categoryType: connectionData.categoryType,
+      billFor: connectionData.billFor,
     };
     axios
-      .post(`${apiUrl}list-body-name`, data)
+      .post(`${apiUrl}list-sub-category`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         console.log("Response:", response);
         if (response?.data?.records.length > 0) {
@@ -102,11 +122,13 @@ function NewConnection() {
         );
       });
   };
+
   const formatDate = (date) => {
-    const dt = new Date(date);
-    const year = dt.getFullYear();
-    const month = (dt.getMonth() + 1).toString().padStart(2, "0");
-    const day = dt.getDate().toString().padStart(2, "0");
+    if (!date) return "";
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   };
   const saveNewConnection = () => {
@@ -132,7 +154,12 @@ function NewConnection() {
       MF: connectionData.mf,
     };
     axios
-      .post(`${apiUrl}add-connections`, data)
+      .post(`${apiUrl}add-connections`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         console.log("Response:", response);
         setLoading(false);
@@ -154,16 +181,21 @@ function NewConnection() {
     setConnectionData((prev) => ({ ...prev, [name]: value }));
   };
   useState(() => {
-    if (id !== "add") {
+    if (id !== "add" && token !== "") {
       const getList = () => {
         const data = {
           billFor: "",
-          localBodyName: "",
+          categoryBasedName: "",
           categoryType: "",
           connectionID: id,
         };
         axios
-          .post(`${apiUrl}list-connection`, data)
+          .post(`${apiUrl}list-connection`, data, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          })
           .then((response) => {
             console.log("Response:", response);
             if (response?.data?.connections) {
@@ -217,7 +249,7 @@ function NewConnection() {
       };
       getList();
     }
-  }, [id]);
+  }, [id, token]);
 
   const updateConnection = () => {
     setLoading(true);
@@ -243,7 +275,12 @@ function NewConnection() {
       MF: connectionData.mf,
     };
     axios
-      .put(`${apiUrl}update-connection`, data)
+      .put(`${apiUrl}update-connection`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         console.log("Response:", response);
 
@@ -283,8 +320,8 @@ function NewConnection() {
               <option value={""}>Select Bill for</option>
               {billForData.length > 0 &&
                 billForData.map((bill) => (
-                  <option key={bill} value={bill}>
-                    {bill}
+                  <option key={bill._id} value={bill.billFor}>
+                    {bill.billFor}
                   </option>
                 ))}
             </select>
@@ -385,7 +422,6 @@ function NewConnection() {
               </div>
               <div className="w-1/2">
                 <input
-                  id="inline-2-radio"
                   type="radio"
                   onChange={handleChange}
                   value="Offline"
@@ -458,7 +494,6 @@ function NewConnection() {
               </div>
               <div className="w-1/2">
                 <input
-                  id="inline-2-radio"
                   type="radio"
                   onChange={handleChange}
                   value="Non-RDPDRP"
@@ -505,7 +540,6 @@ function NewConnection() {
               </div>
               <div className="w-1/2">
                 <input
-                  id="inline-2-radio"
                   type="radio"
                   onChange={handleChange}
                   value="Un-Metered"

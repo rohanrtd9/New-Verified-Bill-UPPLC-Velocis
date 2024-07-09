@@ -41,6 +41,7 @@ import AdminMonthlyBillForIrrigation from "./pages/private/Admin/Report/AdminMon
 import AdminBillForRiverMaster from "./pages/private/Admin/Report/AdminBillForRiverMaster";
 import AdminBillForJalSansthan from "./pages/private/Admin/Report/AdminBillForJalSansthan";
 import ListConnections from "./pages/private/connection/ListConnection";
+import Login from "./pages/public/Login";
 
 function App() {
   return (
@@ -48,15 +49,15 @@ function App() {
       <BrowserRouter>
         <Layout>
           <Routes>
+            <Route path="/login" element={<Login />} />
             <Route path="/" element={<Dashboard />} />
             <Route path="/NewConnection/:id" element={<NewConnection />} />
             <Route path="/ListConnection" element={<ListConnections />} />
-
             <Route
               path="/BillForLocalBodies"
               element={<BillForLocalBodies />}
             />
-            <Route path="/AddNewBill" element={<AddNewBill />} />
+            <Route path="/AddNewBill/:id" element={<AddNewBill />} />
             <Route path="/AddNewBill" element={<AddNewBill />} />
             <Route path="/VarifyBill" element={<VarifyBill />} />
             <Route path="/BillForIrrigation" element={<BillForIrrigation />} />

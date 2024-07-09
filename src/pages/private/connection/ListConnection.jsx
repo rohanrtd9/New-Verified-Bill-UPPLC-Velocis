@@ -5,6 +5,7 @@ import { apiUrl } from "../../../constant";
 import axios from "axios";
 import Loader from "../../../component/Loader";
 import { useNavigate } from "react-router-dom";
+import { useUserContext } from "../../../utils/userContext";
 
 function ListConnections() {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ function ListConnections() {
   const [connectionID, setConnectionID] = useState("");
   const [connectionData, setConnectionData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const { token } = useUserContext();
   useEffect(() => {
     getList();
   }, []);
@@ -25,7 +27,12 @@ function ListConnections() {
       connectionID: connectionID,
     };
     axios
-      .post(`${apiUrl}list-connection`, data)
+      .post(`${apiUrl}list-connection`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         console.log("Response:", response);
         if (response?.data?.connections) {
@@ -53,8 +60,11 @@ function ListConnections() {
     };
 
     axios
-      .delete(`${apiUrl}delete-connection`, {
-        data: data,
+      .delete(`${apiUrl}delete-connection`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       })
       .then((response) => {
         setLoading(false);
