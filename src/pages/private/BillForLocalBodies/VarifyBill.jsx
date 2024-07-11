@@ -5,7 +5,7 @@ function VarifyBill() {
   return (
     <>
       <Header
-        title="Upload Varified Bill"
+        title="Upload Verified Bill"
         action={{
           button: "",
           path: "",
@@ -28,7 +28,7 @@ function VarifyBill() {
 
           <div className="relative z-0 w-full col-md-4 mb-4 group">
             <input type="text" className={input} placeholder=" " required />
-            <label className={label}>Varified Amount</label>
+            <label className={label}>Verified Amount</label>
           </div>
 
           <div className="relative z-0 w-full col-md-4 mb-4 group">

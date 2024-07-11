@@ -60,11 +60,12 @@ function ListConnections() {
     };
 
     axios
-      .delete(`${apiUrl}delete-connection`, data, {
+      .delete(`${apiUrl}delete-connection`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
+        data: data,
       })
       .then((response) => {
         setLoading(false);

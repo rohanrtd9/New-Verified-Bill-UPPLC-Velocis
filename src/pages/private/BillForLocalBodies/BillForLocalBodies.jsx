@@ -41,6 +41,7 @@ function BillForLocalBodies() {
     setConnectionData((prev) => ({ ...prev, [name]: value }));
   };
   const getBillFor = () => {
+    setLoading(true);
     axios
       .post(`${apiUrl}list-billfor`, {
         headers: {
@@ -49,12 +50,14 @@ function BillForLocalBodies() {
         },
       })
       .then((response) => {
+        setLoading(false);
         console.log("Response:", response);
         if (response?.data?.records.length > 0) {
           setBillForData(response?.data?.records);
         }
       })
       .catch((error) => {
+        setLoading(false);
         console.error(
           "Error:",
           error.response ? error.response.data : error.message
@@ -62,6 +65,7 @@ function BillForLocalBodies() {
       });
   };
   const getCtegoryType = () => {
+    setLoading(true);
     const data = {
       billFor: connectionData.billFor,
       masters: 0,
@@ -74,12 +78,14 @@ function BillForLocalBodies() {
         },
       })
       .then((response) => {
+        setLoading(false);
         console.log("Response:", response);
         if (response?.data?.records.length > 0) {
           setCategoryTypeData(response.data.records);
         }
       })
       .catch((error) => {
+        setLoading(false);
         console.error(
           "Error:",
           error.response ? error.response.data : error.message
@@ -87,6 +93,7 @@ function BillForLocalBodies() {
       });
   };
   const getLocalBodyName = () => {
+    setLoading(true);
     const data = {
       categoryType: connectionData.categoryType,
       billFor: connectionData.billFor,
@@ -100,11 +107,13 @@ function BillForLocalBodies() {
       })
       .then((response) => {
         console.log("Response:", response);
+        setLoading(false);
         if (response?.data?.records.length > 0) {
           setLocalBodyNameData(response.data.records);
         }
       })
       .catch((error) => {
+        setLoading(false);
         console.error(
           "Error:",
           error.response ? error.response.data : error.message
@@ -112,6 +121,7 @@ function BillForLocalBodies() {
       });
   };
   const search = () => {
+    setLoading(true);
     const data = {
       billFor: connectionData.billFor,
       categoryBasedName: connectionData.localBodyName,
@@ -127,6 +137,7 @@ function BillForLocalBodies() {
       })
       .then((response) => {
         console.log("Response:", response);
+        setLoading(false);
         if (response?.data?.connections.length > 0) {
           setConnectionList(response.data.connections);
         } else {
@@ -134,6 +145,7 @@ function BillForLocalBodies() {
         }
       })
       .catch((error) => {
+        setLoading(false);
         console.error(
           "Error:",
           error.response ? error.response.data : error.message
@@ -144,7 +156,7 @@ function BillForLocalBodies() {
     <>
       {loading && <Loader />}
       <Header
-        title="Varified Monthly Bill For Local Bodies"
+        title="Verified Monthly Bill For Local Bodies"
         action={{
           button: "",
           path: "",
@@ -217,6 +229,14 @@ function BillForLocalBodies() {
         </button>
         <button
           type="button"
+          onClick={() => {
+            setConnectionData({
+              billFor: "",
+              categoryType: "",
+              localBodyName: "",
+            });
+            setConnectionList([]);
+          }}
           className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
         >
           Reset
@@ -261,30 +281,42 @@ function BillForLocalBodies() {
             </tr>
           </thead>
           <tbody>
-            {connectionList.length > 0
-              ? connectionList.map((connection, index) => (
-                  <tr className="bg-white border-b" key={connection._id}>
-                    <td className="px-6 py-4">{index + 1}</td>
-                    <td className="px-6 py-4">{connection.bookNo}</td>
-                    <td className="px-6 py-4">{connection.name}</td>
-                    <td className="px-6 py-4">{connection.address}</td>
-                    <td className="px-6 py-4">{connection.load}</td>
-                    <td className="px-6 py-4">{connection.st}</td>
-                    <td className="px-6 py-4">{connection.meterStatus}</td>
-                    <td className="px-6 py-4">{connection.meterNo}</td>
-                    <td className="px-6 py-4">NA</td>
-                    <td className="px-6 py-4">
+            {connectionList.length > 0 ? (
+              connectionList.map((connection, index) => (
+                <tr className="bg-white border-b" key={connection._id}>
+                  <td className="px-6 py-4">{index + 1}</td>
+                  <td className="px-6 py-4">{connection.bookNo}</td>
+                  <td className="px-6 py-4">{connection.name}</td>
+                  <td className="px-6 py-4">{connection.address}</td>
+                  <td className="px-6 py-4">{connection.load}</td>
+                  <td className="px-6 py-4">{connection.st}</td>
+                  <td className="px-6 py-4">{connection.meterStatus}</td>
+                  <td className="px-6 py-4">{connection.meterNo}</td>
+                  <td className="px-6 py-4">NA</td>
+                  <td className="px-6 py-4">
+                    {" "}
+                    <Link
+                      to={`/AddNewBill/${connection._id}/${connection.name
+                        .toLowerCase()
+                        .replace(/ /g, "-")}/${connection.bookNo}/${
+                        connection.scNo
+                      }`}
+                    >
                       {" "}
-                      <Link to={`/AddNewBill/${connection._id}`}>
-                        {" "}
-                        <button className={btn} style={{ width: "100px" }}>
-                          Add Bill
-                        </button>
-                      </Link>
-                    </td>
-                  </tr>
-                ))
-              : "no record"}
+                      <button className={btn} style={{ width: "100px" }}>
+                        Add Bill
+                      </button>
+                    </Link>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={10} align="center">
+                  No record found.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

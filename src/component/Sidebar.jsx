@@ -102,7 +102,7 @@ export function Sidebar() {
                     <BoltIcon className="h-5 w-5" />
                   </ListItemPrefix>
                   <Typography color="blue-gray" className="mr-auto font-medium">
-                    Trasaction Form
+                    Transaction Form
                   </Typography>
                 </AccordionHeader>
               </ListItem>
@@ -111,7 +111,7 @@ export function Sidebar() {
                   <NavLink
                     to="/BillForLocalBodies"
                     className={
-                      pathname === "/AddNewBill" || pathname === "/VarifyBill"
+                      pathname === "/AddNewBill" || pathname === "/VerifyBill"
                         ? "active"
                         : ""
                     }
@@ -120,7 +120,7 @@ export function Sidebar() {
                       <ListItemPrefix>
                         <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                       </ListItemPrefix>
-                      Varified Monthly Bill
+                      Verified Monthly Bill
                     </ListItem>
                   </NavLink>
 
@@ -224,7 +224,7 @@ export function Sidebar() {
                       <ListItemPrefix>
                         <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                       </ListItemPrefix>
-                      Search Varified Monthly Bill for Local Bodies
+                      Search Verified Monthly Bill for Local Bodies
                     </ListItem>
                   </NavLink>
 
@@ -233,7 +233,7 @@ export function Sidebar() {
                       <ListItemPrefix>
                         <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                       </ListItemPrefix>
-                      Search Varified Monthly Bill for Irrigation
+                      Search Verified Monthly Bill for Irrigation
                     </ListItem>
                   </NavLink>
 
@@ -242,7 +242,7 @@ export function Sidebar() {
                       <ListItemPrefix>
                         <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                       </ListItemPrefix>
-                      Search Varified Monthly Bill for River Pollution Control
+                      Search Verified Monthly Bill for River Pollution Control
                       Unit Master
                     </ListItem>
                   </NavLink>
@@ -252,7 +252,7 @@ export function Sidebar() {
                       <ListItemPrefix>
                         <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                       </ListItemPrefix>
-                      Search Varified Monthly Bill for Jal Sansthan
+                      Search Verified Monthly Bill for Jal Sansthan
                     </ListItem>
                   </NavLink>
                 </List>
@@ -403,7 +403,7 @@ export function Sidebar() {
                       <ListItemPrefix>
                         <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                       </ListItemPrefix>
-                      Search Varified Monthly Bill Local Body
+                      Search Verified Monthly Bill Local Body
                     </ListItem>
                   </NavLink>
 

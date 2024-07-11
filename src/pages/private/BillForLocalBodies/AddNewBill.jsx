@@ -1,20 +1,28 @@
 import Header from "../../../component/Header";
-import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
+import {
+  PencilSquareIcon,
+  TrashIcon,
+  ArrowDownTrayIcon,
+} from "@heroicons/react/24/solid";
 import { select, input, label, btn } from "../../../utils/tailwindClasses";
 import { Link, useParams } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { apiUrl } from "../../../constant";
 import { useUserContext } from "../../../utils/userContext";
+import Loader from "../../../component/Loader";
 
 function AddNewBill() {
-  const { id } = useParams();
+  const { id, name, bookNo, scNo } = useParams();
   console.log("id: ", id);
   const { token } = useUserContext();
+  const [loading, setLoading] = useState(false);
+  const [billList, setBillList] = useState([]);
+  const [mode, setMode] = useState("add");
   const [billData, setBillData] = useState({
-    name: "",
-    bookNo: "",
-    scNo: "",
+    name: name.replace("-", " "),
+    bookNo: bookNo,
+    scNo: scNo,
     month: "",
     financialYear: "",
     soldEnergy: "",
@@ -25,7 +33,14 @@ function AddNewBill() {
     regulatorySurcharge: "",
     totalAmount: "",
     docFile: null,
+    billId: "",
+    selectedFile: [],
   });
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    console.log("xxxx");
+  }, [mode]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -43,6 +58,7 @@ function AddNewBill() {
   };
 
   const saveBill = () => {
+    setLoading(true);
     const formData = new FormData();
     formData.append("connectionID", id);
     formData.append("month", billData.month);
@@ -56,19 +72,20 @@ function AddNewBill() {
     formData.append("totalAmount", billData.totalAmount);
     formData.append("documents", billData.docFile);
     console.log(billData.docFile);
-    console.log(token);
     axios
       .post(apiUrl + "add-bill", formData, {
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       })
       .then((response) => {
         console.log("Response:", response);
-        // Handle success, e.g., clear the form or show a success message
+        alert("Bill Added Successfully.");
+        getBill();
+        setLoading(false);
       })
       .catch((error) => {
+        setLoading(false);
         console.error(
           "Error:",
           error.response ? error.response.data : error.message
@@ -76,11 +93,132 @@ function AddNewBill() {
         // Handle error, e.g., show an error message
       });
   };
-
+  useEffect(() => {
+    getBill();
+  }, []);
+  const getBill = () => {
+    setLoading(true);
+    const data = {
+      connectionID: id,
+      BillID: "",
+    };
+    axios
+      .post(`${apiUrl}list-bill`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        setLoading(false);
+        console.log("Response:", response);
+        if (response?.data?.connectionBills) {
+          setBillList(response?.data?.connectionBills);
+        }
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.error(
+          "Error:",
+          error.response ? error.response.data : error.message
+        );
+      });
+  };
+  const deleteBill = (billId) => {
+    setLoading(true);
+    const data = {
+      billID: billId,
+    };
+    axios
+      .delete(`${apiUrl}delete-bill`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        data,
+      })
+      .then((response) => {
+        console.log("Response:", response);
+        alert("Bill deleted successfully.");
+        setLoading(false);
+        getBill();
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.error(
+          "Error:",
+          error.response ? error.response.data : error.message
+        );
+      });
+  };
+  const downloadAttachment = (docs) => {
+    for (let i = 0; i < docs.length; i++) {
+      const link = document.createElement("a");
+      link.href = docs[i].documentURL;
+      link.setAttribute("download", docs[i].documentName);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
+  const updateBill = () => {
+    setLoading(true);
+    const formData = new FormData();
+    formData.append("connectionID", id);
+    formData.append("month", billData.month);
+    formData.append("year", billData.financialYear);
+    formData.append("soldEnergy", billData.soldEnergy);
+    formData.append("fixedCharge", billData.fixedCharge);
+    formData.append("energyCharge", billData.energyCharge);
+    formData.append("electricityDuty", billData.electricityDuty);
+    formData.append("miscellaneous", billData.miscellaneous);
+    formData.append("regulatorySurcharge", billData.regulatorySurcharge);
+    formData.append("totalAmount", billData.totalAmount);
+    formData.append("documents", billData.docFile);
+    formData.append("billID", billData.billId);
+    console.log(billData.docFile);
+    axios
+      .put(apiUrl + "update-bill", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        console.log("Response:", response);
+        alert("Bill Updated Successfully.");
+        setBillData(() => ({
+          ...billData,
+          month: "",
+          financialYear: "",
+          soldEnergy: "",
+          fixedCharge: "",
+          energyCharge: "",
+          electricityDuty: "",
+          miscellaneous: "",
+          regulatorySurcharge: "",
+          totalAmount: "",
+          docFile: null,
+          billId: "",
+          selectedFile: [],
+        }));
+        setMode("add");
+        setLoading(false);
+        getBill();
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.error(
+          "Error:",
+          error.response ? error.response.data : error.message
+        );
+        // Handle error, e.g., show an error message
+      });
+  };
   return (
     <>
+      {loading && <Loader />}
       <Header
-        title="Add New Bill"
+        title={mode === "add" ? "Add New Bill" : "Update Bill"}
         action={{
           button: "",
           path: "",
@@ -92,12 +230,11 @@ function AddNewBill() {
           <div className="relative z-0 w-full col-md-4 mb-4 group">
             <input
               type="text"
-              name="name"
               className={input}
               placeholder=" "
               required
               value={billData.name}
-              onChange={handleChange}
+              readOnly
             />
             <label className={label}>Name</label>
           </div>
@@ -105,12 +242,11 @@ function AddNewBill() {
           <div className="relative z-0 w-full col-md-4 mb-4 group">
             <input
               type="text"
-              name="bookNo"
               className={input}
               placeholder=" "
               required
               value={billData.bookNo}
-              onChange={handleChange}
+              readOnly
             />
             <label className={label}>Book No</label>
           </div>
@@ -118,12 +254,11 @@ function AddNewBill() {
           <div className="relative z-0 w-full col-md-4 mb-4 group">
             <input
               type="text"
-              name="scNo"
               className={input}
               placeholder=" "
               required
               value={billData.scNo}
-              onChange={handleChange}
+              readOnly
             />
             <label className={label}>SC No</label>
           </div>
@@ -270,12 +405,20 @@ function AddNewBill() {
               required
               onChange={handleChange}
             />
+            {mode === "edit" &&
+              billData.selectedFile.length > 0 &&
+              billData.selectedFile.map((file) => (
+                <p key={file._id}>{file.documentName}</p>
+              ))}
             <label className={label}>Upload Document</label>
           </div>
         </div>
 
-        <button className={btn} onClick={saveBill}>
-          Save
+        <button
+          className={btn}
+          onClick={mode === "add" ? saveBill : updateBill}
+        >
+          {mode === "add" ? "Save" : "Update"}
         </button>
         <button
           type="button"
@@ -286,80 +429,117 @@ function AddNewBill() {
       </div>
 
       <div className="mt-10 relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <table className="w-full text-sm text-left rtl:text-right text-gray-500">
+          <thead className="text-xs text-gray-700 bg-gray-50 border border-gray-200">
             <tr>
-              <th scope="col" className="px-6 py-3">
-                S.No.
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Year
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Month
-              </th>
-              <th scope="col" className="px-6 py-3">
+              <th className="p-3 border-b border-gray-200">S.No.</th>
+              <th className="p-3 border-b border-gray-200">Year</th>
+              <th className="p-3 border-b border-gray-200">Month</th>
+              <th className="p-3 border-b border-gray-200 whitespace-nowrap">
                 Sold Energy
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th className="p-3 border-b border-gray-200 whitespace-nowrap">
                 Fixed Charge
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th className="p-3 border-b border-gray-200 whitespace-nowrap">
                 Energy Charge
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th className="p-3 border-b border-gray-200 whitespace-nowrap">
                 Electricity Duty
               </th>
-
-              <th scope="col" className="px-6 py-3">
+              <th className="p-3 border-b border-gray-200 whitespace-nowrap">
                 Miscellaneous
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th className="p-3 border-b border-gray-200 whitespace-nowrap">
                 Regulatory Surcharge
               </th>
-              <th scope="col" className="px-6 py-3">
-                Attachment
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Action
-              </th>
-              <th scope="col" className="px-6 py-3">
+              <th className="p-3 border-b border-gray-200">Attachment</th>
+              <th className="p-3 border-b border-gray-200">Action</th>
+              <th className="p-3 border-b border-gray-200 whitespace-nowrap">
                 Verified and Upload Verified Bill
               </th>
             </tr>
           </thead>
           <tbody>
-            <tr className="border-b ">
-              <td
-                scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-              >
-                1
-              </td>
-              <td className="px-6 py-4">678</td>
-              <td className="px-6 py-4">5654</td>
-              <td className="px-6 py-4">UPPCL</td>
-              <td className="px-6 py-4">Lucknow</td>
-              <td className="px-6 py-4">678.67</td>
-              <td className="px-6 py-4">678.67</td>
-              <td className="px-6 py-4">678.67</td>
-              <td className="px-6 py-4">678.67</td>
-              <td className="px-6 py-4">
-                {" "}
-                <button className={btn}>Download</button>
-              </td>
-              <td className="px-6 py-4 flex">
-                <TrashIcon className="h-5 w-5" />{" "}
-                <PencilSquareIcon className="h-5 w-5 ms-2" />
-              </td>
-              <td className="px-6 py-4">
-                {" "}
-                <Link to="/VarifyBill">
-                  {" "}
-                  <button className={btn}>Verify</button>
-                </Link>
-              </td>
-            </tr>
+            {billList.length > 0 ? (
+              billList.map((bill, index) => (
+                <tr key={bill._id}>
+                  <td className="p-3 border-b border-gray-200">{index + 1}</td>
+                  <td className="p-3 border-b border-gray-200">{bill.year}</td>
+                  <td className="p-3 border-b border-gray-200">{bill.month}</td>
+                  <td className="p-3 border-b border-gray-200">
+                    {bill.soldEnergy}
+                  </td>
+                  <td className="p-3 border-b border-gray-200">
+                    {bill.fixedCharge}
+                  </td>
+                  <td className="p-3 border-b border-gray-200">
+                    {bill.energyCharge}
+                  </td>
+                  <td className="p-3 border-b border-gray-200">
+                    {bill.electricityDuty}
+                  </td>
+                  <td className="p-3 border-b border-gray-200">
+                    {bill.miscellaneous}
+                  </td>
+                  <td className="p-3 border-b border-gray-200">
+                    {bill.regulatorySurcharge}
+                  </td>
+                  <td className="p-3 border-b border-gray-200">
+                    <button
+                      className="bg-blue-500 text-white px-3 p-2 rounded ms-2 flex"
+                      onClick={() => downloadAttachment(bill.documents)}
+                    >
+                      <ArrowDownTrayIcon className="h-5 w-5" />
+                    </button>
+                  </td>
+                  <td className="P-3 pt-3 border-b border-gray-200 flex">
+                    <button
+                      className="bg-red-500 text-white px-4 p-2 rounded"
+                      onClick={() => deleteBill(bill._id)}
+                    >
+                      <TrashIcon className="h-5 w-5" />
+                    </button>
+                    <button
+                      className="bg-blue-500 text-white px-4 p-2 rounded ms-2"
+                      onClick={() => {
+                        setMode("edit");
+                        setBillData(() => ({
+                          ...billData,
+                          month: bill.month,
+                          financialYear: bill.year,
+                          soldEnergy: bill.soldEnergy,
+                          fixedCharge: bill.fixedCharge,
+                          energyCharge: bill.energyCharge,
+                          electricityDuty: bill.electricityDuty,
+                          miscellaneous: bill.miscellaneous,
+                          regulatorySurcharge: bill.regulatorySurcharge,
+                          totalAmount: bill.totalAmount,
+                          docFile: "",
+                          billId: bill._id,
+                          selectedFile: bill.documents,
+                        }));
+                      }}
+                    >
+                      <PencilSquareIcon className="h-5 w-5" />
+                    </button>
+                  </td>
+                  <td className="P-3" align="center">
+                    <Link to="/VarifyBill">
+                      <button className="bg-blue-500 text-white px-5 p-2 rounded">
+                        Verify
+                      </button>
+                    </Link>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={12} align="center">
+                  No record found.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

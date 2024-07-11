@@ -57,7 +57,10 @@ function App() {
               path="/BillForLocalBodies"
               element={<BillForLocalBodies />}
             />
-            <Route path="/AddNewBill/:id" element={<AddNewBill />} />
+            <Route
+              path="/AddNewBill/:id/:name/:bookNo/:scNo"
+              element={<AddNewBill />}
+            />
             <Route path="/AddNewBill" element={<AddNewBill />} />
             <Route path="/VarifyBill" element={<VarifyBill />} />
             <Route path="/BillForIrrigation" element={<BillForIrrigation />} />
