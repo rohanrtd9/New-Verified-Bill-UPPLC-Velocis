@@ -11,10 +11,11 @@ import axios from "axios";
 import { apiUrl } from "../../../constant";
 import { useUserContext } from "../../../utils/userContext";
 import Loader from "../../../component/Loader";
+import { encrypt } from "../../../utils/cryptoUtils";
 
 function AddNewBill() {
   const { id, name, bookNo, scNo } = useParams();
-  console.log("id: ", id);
+
   const { token } = useUserContext();
   const [loading, setLoading] = useState(false);
   const [billList, setBillList] = useState([]);
@@ -39,7 +40,6 @@ function AddNewBill() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    console.log("xxxx");
   }, [mode]);
 
   const handleChange = (e) => {
@@ -230,7 +230,7 @@ function AddNewBill() {
           <div className="relative z-0 w-full col-md-4 mb-4 group">
             <input
               type="text"
-              className={input}
+              className={input + " capitalize"}
               placeholder=" "
               required
               value={billData.name}
@@ -405,7 +405,9 @@ function AddNewBill() {
               required
               onChange={handleChange}
             />
+
             {mode === "edit" &&
+              billData.docFile?.name === undefined &&
               billData.selectedFile.length > 0 &&
               billData.selectedFile.map((file) => (
                 <p key={file._id}>{file.documentName}</p>
@@ -453,6 +455,9 @@ function AddNewBill() {
               <th className="p-3 border-b border-gray-200 whitespace-nowrap">
                 Regulatory Surcharge
               </th>
+              <th className="p-3 border-b border-gray-200 whitespace-nowrap">
+                Total Amount
+              </th>
               <th className="p-3 border-b border-gray-200">Attachment</th>
               <th className="p-3 border-b border-gray-200">Action</th>
               <th className="p-3 border-b border-gray-200 whitespace-nowrap">
@@ -470,20 +475,23 @@ function AddNewBill() {
                   <td className="p-3 border-b border-gray-200">
                     {bill.soldEnergy}
                   </td>
-                  <td className="p-3 border-b border-gray-200">
+                  <td className="p-3 border-b border-gray-200" align="right">
                     {bill.fixedCharge}
                   </td>
-                  <td className="p-3 border-b border-gray-200">
+                  <td className="p-3 border-b border-gray-200" align="right">
                     {bill.energyCharge}
                   </td>
-                  <td className="p-3 border-b border-gray-200">
+                  <td className="p-3 border-b border-gray-200" align="right">
                     {bill.electricityDuty}
                   </td>
-                  <td className="p-3 border-b border-gray-200">
+                  <td className="p-3 border-b border-gray-200" align="right">
                     {bill.miscellaneous}
                   </td>
-                  <td className="p-3 border-b border-gray-200">
+                  <td className="p-3 border-b border-gray-200" align="right">
                     {bill.regulatorySurcharge}
+                  </td>
+                  <td className="p-3 border-b border-gray-200" align="right">
+                    {bill.totalAmount}
                   </td>
                   <td className="p-3 border-b border-gray-200">
                     <button
@@ -525,7 +533,11 @@ function AddNewBill() {
                     </button>
                   </td>
                   <td className="P-3" align="center">
-                    <Link to="/VarifyBill">
+                    <Link
+                      to={`/VarifyBill/${encodeURIComponent(
+                        encrypt(bill.totalAmount)
+                      )}/${bill._id}`}
+                    >
                       <button className="bg-blue-500 text-white px-5 p-2 rounded">
                         Verify
                       </button>

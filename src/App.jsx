@@ -62,7 +62,10 @@ function App() {
               element={<AddNewBill />}
             />
             <Route path="/AddNewBill" element={<AddNewBill />} />
-            <Route path="/VarifyBill" element={<VarifyBill />} />
+            <Route
+              path="/VarifyBill/:amount/:billId"
+              element={<VarifyBill />}
+            />
             <Route path="/BillForIrrigation" element={<BillForIrrigation />} />
             <Route
               path="/AddNewBillForIrrigation"
