@@ -1,13 +1,15 @@
 import Header from "../../../component/Header";
 import { select, label, btn } from "../../../utils/tailwindClasses";
-import { Link } from "react-router-dom";
 import Loader from "../../../component/Loader";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { apiUrl } from "../../../constant";
 import { useUserContext } from "../../../utils/userContext";
+import { encrypt } from "../../../utils/cryptoUtils";
+import { useNavigate } from "react-router-dom";
 
 function AddConsolidatedSummary() {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const { token } = useUserContext();
   const [discomList, setDiscomList] = useState([]);
@@ -347,7 +349,10 @@ function AddConsolidatedSummary() {
       });
   };
   const redirectToUpload = () => {
-    console.log("xx", uploadData);
+    const encodedData = encodeURIComponent(JSON.stringify(uploadData));
+    console.log(encodedData);
+    //const url = encrypt(encodedData);
+    navigate(`/UploadConsolidatedSummary/${encodedData}`);
   };
   return (
     <>
@@ -519,12 +524,15 @@ function AddConsolidatedSummary() {
             </div>
           </div>
 
-          <button className={btn} type="submit">
+          <button
+            className="bg-blue-500 text-white px-5 py-1 hover:bg-blue-600 rounded me-3"
+            type="submit"
+          >
             Search
           </button>
           <button
             type="button"
-            className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+            className="bg-red-500 text-white px-5 py-1 hover:bg-red-600 rounded"
           >
             Reset
           </button>
@@ -578,12 +586,14 @@ function AddConsolidatedSummary() {
       </div>
       <div className="flex mt-4  justify-between">
         <p>Consolidated Varified Amount : {verifiedAmt}</p>{" "}
-        <Link to="/UploadConsolidatedSummary">
-          {" "}
+        {/* <Link to="/UploadConsolidatedSummary">
           <button className={btn} onClick={redirectToUpload}>
             Upload Consolidated Bill
           </button>
-        </Link>
+        </Link> */}
+        <button className={btn} onClick={redirectToUpload}>
+          Upload Consolidated Bill
+        </button>
       </div>
     </>
   );

@@ -104,7 +104,7 @@ function App() {
               element={<AddConsolidatedSummary />}
             />
             <Route
-              path="/UploadConsolidatedSummary"
+              path="/UploadConsolidatedSummary/:data"
               element={<UploadConsolidatedSummary />}
             />
             <Route
