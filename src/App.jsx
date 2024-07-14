@@ -27,7 +27,7 @@ import { AppProvider } from "./utils/userContext";
 
 // Start Route For Admin On (27/04/2024)
 
-import LocalBodyMaster from "./pages/private/Admin/Master/LocalBodyMaster";
+/* import LocalBodyMaster from "./pages/private/Admin/Master/LocalBodyMaster";
 import NagarNigamMaster from "./pages/private/Admin/Master/NagarNigamMaster";
 import NagarPalikaMaster from "./pages/private/Admin/Master/NagarPalikaMaster";
 import NagarPanchayatMaster from "./pages/private/Admin/Master/NagarPanchayatMaster";
@@ -35,7 +35,19 @@ import JalSansthanMaster from "./pages/private/Admin/Master/JalSansthanMaster";
 import StateTubeWellMaster from "./pages/private/Admin/Master/StateTubeWellMaster";
 import SmallPumpCanalMaster from "./pages/private/Admin/Master/SmallPumpCanalMaster";
 import MediumLargeCanalPumpMaster from "./pages/private/Admin/Master/MediumLargeCanalPumpMaster";
-import RiverPollutionMaster from "./pages/private/Admin/Master/RiverPollutionMaster";
+import RiverPollutionMaster from "./pages/private/Admin/Master/RiverPollutionMaster"; */
+// Start route for admin on (06/07/2024)
+
+import AdminLocalBodyMaster from "./pages/private/Admin/Master/AdminLocalBodyMaster";
+import AdminNagarNigamMaster from "./pages/private/Admin/Master/AdminNagarNigamMaster";
+import AdminNagarPalikaMaster from "./pages/private/Admin/Master/AdminNagarPalikaMaster";
+import AdminNagarPanchayatMaster from "./pages/private/Admin/Master/AdminNagarPanchayatMaster";
+import AdminJalSansthanMaster from "./pages/private/Admin/Master/AdminJalSansthanMaster";
+import AdminStateTubewellMaster from "./pages/private/Admin/Master/AdminStateTubewellMaster";
+import AdminSmallPumpCanalMaster from "./pages/private/Admin/Master/AdminSmallPumpCanalMaster";
+import AdminMediumLargePumpCanalMaster from "./pages/private/Admin/Master/AdminMediumLargePumpCanalMaster";
+import AdminRiverPollutionMaster from "./pages/private/Admin/Master/AdminRiverPollutionMaster";
+
 import AdminBillForLocalBodies from "./pages/private/Admin/Report/AdminBillForLocalBodies";
 import AdminMonthlyBillForIrrigation from "./pages/private/Admin/Report/AdminMonthlyBillForIrrigation";
 import AdminBillForRiverMaster from "./pages/private/Admin/Report/AdminBillForRiverMaster";
@@ -124,45 +136,47 @@ function App() {
               element={<ReportBillForJalSansthan />}
             />
             {/* Admin Route Here */}
-            <Route path="/LocalBodyMaster" element={<LocalBodyMaster />} />
-            <Route path="/NagarNigamMaster" element={<NagarNigamMaster />} />
-            <Route path="/NagarPalikaMaster" element={<NagarPalikaMaster />} />
-            <Route path="/JalSansthanMaster" element={<JalSansthanMaster />} />
-            <Route
-              path="/RiverPollutionMaster"
-              element={<RiverPollutionMaster />}
-            />
-            <Route
+
+            {/* <Route
               path="/MediumLargeCanalPumpMaster"
               element={<MediumLargeCanalPumpMaster />}
+            /> */}
+
+            <Route
+              path="/AdminLocalBodyMaster"
+              element={<AdminLocalBodyMaster />}
             />
             <Route
-              path="/SmallPumpCanalMaster"
-              element={<SmallPumpCanalMaster />}
+              path="/AdminNagarNigamMaster"
+              element={<AdminNagarNigamMaster />}
             />
             <Route
-              path="/NagarPanchayatMaster"
-              element={<NagarPanchayatMaster />}
+              path="/AdminNagarPalikaMaster"
+              element={<AdminNagarPalikaMaster />}
             />
             <Route
-              path="/StateTubeWellMaster"
-              element={<StateTubeWellMaster />}
+              path="/AdminNagarPanchayatMaster"
+              element={<AdminNagarPanchayatMaster />}
             />
             <Route
-              path="/AdminBillForLocalBodies"
-              element={<AdminBillForLocalBodies />}
+              path="/AdminJalSansthanMaster"
+              element={<AdminJalSansthanMaster />}
             />
             <Route
-              path="/AdminMonthlyBillForIrrigation"
-              element={<AdminMonthlyBillForIrrigation />}
+              path="/AdminStateTubewellMaster"
+              element={<AdminStateTubewellMaster />}
             />
             <Route
-              path="/AdminBillForRiverMaster"
-              element={<AdminBillForRiverMaster />}
+              path="/AdminSmallPumpCanalMaster"
+              element={<AdminSmallPumpCanalMaster />}
             />
             <Route
-              path="/AdminBillForJalSansthan"
-              element={<AdminBillForJalSansthan />}
+              path="/AdminMediumLargePumpCanalMaster"
+              element={<AdminMediumLargePumpCanalMaster />}
+            />
+            <Route
+              path="/AdminRiverPollutionMaster"
+              element={<AdminRiverPollutionMaster />}
             />
           </Routes>
         </Layout>

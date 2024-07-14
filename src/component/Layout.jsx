@@ -8,6 +8,7 @@ import { useUserContext } from "../utils/userContext";
 
 const Dropdown = ({ color }) => {
   const navigate = useNavigate();
+  const { userType, setUserType } = useUserContext();
   const [user, setUser] = useState(null);
   useEffect(() => {
     const data = localStorage.getItem("userData");
@@ -76,6 +77,19 @@ const Dropdown = ({ color }) => {
                 onClick={logout}
               >
                 Logout
+              </button>
+              <hr />
+              <button
+                className={
+                  "text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-transparent " +
+                  (color === "white" ? " text-gray-800" : "text-white")
+                }
+                onClick={() => {
+                  setDropdownPopoverShow(false);
+                  setUserType(userType === "division" ? "admin" : "division");
+                }}
+              >
+                Change user type
               </button>
             </div>
           </div>

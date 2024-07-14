@@ -42,7 +42,7 @@ export function Sidebar() {
             Dashboard
           </ListItem>
         </NavLink>
-        {userType === "public" ? (
+        {userType === "division" ? (
           <>
             <Accordion
               open={open === 1}
@@ -261,116 +261,9 @@ export function Sidebar() {
           </>
         ) : (
           //  Sidebar Start for the admin  On 27/04/2024
+
           <>
-            <Accordion
-              open={open === 4}
-              icon={
-                <ChevronDownIcon
-                  strokeWidth={2.5}
-                  className={`mx-auto h-4 w-4 transition-transform ${
-                    open === 4 ? "rotate-180" : ""
-                  }`}
-                />
-              }
-            >
-              <ListItem className="p-0" selected={open === 4}>
-                <AccordionHeader
-                  onClick={() => handleOpen(4)}
-                  className="border-b-0 p-3"
-                >
-                  <ListItemPrefix>
-                    <PresentationChartBarIcon className="h-5 w-5" />
-                  </ListItemPrefix>
-                  <Typography color="blue-gray" className="mr-auto font-medium">
-                    Masters
-                  </Typography>
-                </AccordionHeader>
-              </ListItem>
-              <AccordionBody className="py-1">
-                <List className="p-0">
-                  <NavLink to="/LocalBodyMaster">
-                    <ListItem>
-                      <ListItemPrefix>
-                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                      </ListItemPrefix>
-                      Local Body Master
-                    </ListItem>
-                  </NavLink>
-
-                  <NavLink to="/NagarNigamMaster">
-                    <ListItem>
-                      <ListItemPrefix>
-                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                      </ListItemPrefix>
-                      Nagar Nigam Master
-                    </ListItem>
-                  </NavLink>
-
-                  <NavLink to="/NagarPalikaMaster">
-                    <ListItem>
-                      <ListItemPrefix>
-                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                      </ListItemPrefix>
-                      Nagar Palika Master
-                    </ListItem>
-                  </NavLink>
-
-                  <NavLink to="/NagarPanchayatMaster">
-                    <ListItem>
-                      <ListItemPrefix>
-                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                      </ListItemPrefix>
-                      Nagar Panchayat Master
-                    </ListItem>
-                  </NavLink>
-
-                  <NavLink to="/JalSansthanMaster">
-                    <ListItem>
-                      <ListItemPrefix>
-                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                      </ListItemPrefix>
-                      Jal Sansthan Master
-                    </ListItem>
-                  </NavLink>
-
-                  <NavLink to="/StateTubeWellMaster">
-                    <ListItem>
-                      <ListItemPrefix>
-                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                      </ListItemPrefix>
-                      State Tube Well Master
-                    </ListItem>
-                  </NavLink>
-
-                  <NavLink to="/SmallPumpCanalMaster">
-                    <ListItem>
-                      <ListItemPrefix>
-                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                      </ListItemPrefix>
-                      Small Pump Canal Master
-                    </ListItem>
-                  </NavLink>
-
-                  <NavLink to="/MediumLargeCanalPumpMaster">
-                    <ListItem>
-                      <ListItemPrefix>
-                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                      </ListItemPrefix>
-                      Medium & Large Pump Canal Master
-                    </ListItem>
-                  </NavLink>
-
-                  <NavLink to="/RiverPollutionMaster">
-                    <ListItem>
-                      <ListItemPrefix>
-                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                      </ListItemPrefix>
-                      River Pollution Master
-                    </ListItem>
-                  </NavLink>
-                </List>
-              </AccordionBody>
-            </Accordion>
+            {/* Admin Master Add Here  */}
 
             <Accordion
               open={open === 5}
@@ -389,6 +282,257 @@ export function Sidebar() {
                   className="border-b-0 p-3"
                 >
                   <ListItemPrefix>
+                    <PresentationChartBarIcon className="h-5 w-5" />
+                  </ListItemPrefix>
+                  <Typography color="blue-gray" className="mr-auto font-medium">
+                    Admin Masters
+                  </Typography>
+                </AccordionHeader>
+              </ListItem>
+              <AccordionBody className="py-1">
+                <List className="p-0">
+                  <NavLink to="/AdminLocalBodyMaster">
+                    <ListItem>
+                      <ListItemPrefix>
+                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                      </ListItemPrefix>
+                      Local Body Master
+                    </ListItem>
+                  </NavLink>
+                  <NavLink to="/AdminNagarNigamMaster">
+                    <ListItem>
+                      <ListItemPrefix>
+                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                      </ListItemPrefix>
+                      Nagar Nigam Master
+                    </ListItem>
+                  </NavLink>
+                  <NavLink to="/AdminNagarPalikaMaster">
+                    <ListItem>
+                      <ListItemPrefix>
+                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                      </ListItemPrefix>
+                      Nagar Palika Master
+                    </ListItem>
+                  </NavLink>
+                  <NavLink to="/AdminNagarPanchayatMaster">
+                    <ListItem>
+                      <ListItemPrefix>
+                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                      </ListItemPrefix>
+                      Nagar Panchayat Master
+                    </ListItem>
+                  </NavLink>
+                  <NavLink to="/AdminJalSansthanMaster">
+                    <ListItem>
+                      <ListItemPrefix>
+                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                      </ListItemPrefix>
+                      Jal Sansthan Master
+                    </ListItem>
+                  </NavLink>
+                  <NavLink to="/AdminStateTubewellMaster">
+                    <ListItem>
+                      <ListItemPrefix>
+                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                      </ListItemPrefix>
+                      State Tube Well Master
+                    </ListItem>
+                  </NavLink>
+                  <NavLink to="/AdminSmallPumpCanalMaster">
+                    <ListItem>
+                      <ListItemPrefix>
+                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                      </ListItemPrefix>
+                      Small Pump Canal Master
+                    </ListItem>
+                  </NavLink>
+                  <NavLink to="/AdminMediumLargePumpCanalMaster">
+                    <ListItem>
+                      <ListItemPrefix>
+                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                      </ListItemPrefix>
+                      Medium & Large Pump Canal Master
+                    </ListItem>
+                  </NavLink>
+                  <NavLink to="/AdminRiverPollutionMaster">
+                    <ListItem>
+                      <ListItemPrefix>
+                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                      </ListItemPrefix>
+                      River Pollution Master
+                    </ListItem>
+                  </NavLink>
+                </List>
+              </AccordionBody>
+            </Accordion>
+
+            {/* <Accordion
+              open={open === 1}
+              icon={
+                <ChevronDownIcon
+                  strokeWidth={2.5}
+                  className={`mx-auto h-4 w-4 transition-transform ${
+                    open === 1 ? "rotate-180" : ""
+                  }`}
+                />
+              }
+            >
+              <ListItem className="p-0" selected={open === 1}>
+                <AccordionHeader
+                  onClick={() => handleOpen(1)}
+                  className="border-b-0 p-3"
+                >
+                  <ListItemPrefix>
+                    <PresentationChartBarIcon className="h-5 w-5" />
+                  </ListItemPrefix>
+                  <Typography color="blue-gray" className="mr-auto font-medium">
+                    Masters
+                  </Typography>
+                </AccordionHeader>
+              </ListItem>
+              <AccordionBody className="py-1">
+                <List className="p-0">
+                  <NavLink to="/NewConnection">
+                    <ListItem>
+                      <ListItemPrefix>
+                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                      </ListItemPrefix>
+                      New Connection
+                    </ListItem>
+                  </NavLink>
+                </List>
+              </AccordionBody>
+            </Accordion>
+
+            <Accordion
+              open={open === 2}
+              icon={
+                <ChevronDownIcon
+                  strokeWidth={2.5}
+                  className={`mx-auto h-4 w-4 transition-transform ${
+                    open === 2 ? "rotate-180" : ""
+                  }`}
+                />
+              }
+            >
+              <ListItem className="p-0" selected={open === 2}>
+                <AccordionHeader
+                  onClick={() => handleOpen(2)}
+                  className="border-b-0 p-3"
+                >
+                  <ListItemPrefix>
+                    <BoltIcon className="h-5 w-5" />
+                  </ListItemPrefix>
+                  <Typography color="blue-gray" className="mr-auto font-medium">
+                    Trasaction Form
+                  </Typography>
+                </AccordionHeader>
+              </ListItem>
+              <AccordionBody className="py-1">
+                <List className="p-0">
+                  <NavLink
+                    to="/BillForLocalBodies"
+                    className={
+                      pathname === "/AddNewBill" || pathname === "/VarifyBill"
+                        ? "active"
+                        : ""
+                    }
+                  >
+                    <ListItem>
+                      <ListItemPrefix>
+                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                      </ListItemPrefix>
+                      Verified Monthly Bill for Local Bodies
+                    </ListItem>
+                  </NavLink>
+
+                  <NavLink
+                    to="/BillForIrrigation"
+                    className={
+                      pathname === "/AddNewBillForIrrigation" ||
+                      pathname === "/VarifyBillForIrrigation"
+                        ? "active"
+                        : ""
+                    }
+                  >
+                    <ListItem>
+                      <ListItemPrefix>
+                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                      </ListItemPrefix>
+                      Verified Monthly Bill for Irrigation
+                    </ListItem>
+                  </NavLink>
+
+                  <NavLink
+                    to="/BillForRiverMaster"
+                    className={
+                      pathname === "/AddNewBillForRiverMaster" ||
+                      pathname === "/VarifyBillForRiverMaster"
+                        ? "active"
+                        : ""
+                    }
+                  >
+                    <ListItem>
+                      <ListItemPrefix>
+                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                      </ListItemPrefix>
+                      Verified Monthly Bill for River Pollution Control Unit
+                      Master
+                    </ListItem>
+                  </NavLink>
+
+                  <NavLink
+                    to="/BillForJalSansthan"
+                    className={
+                      pathname === "/AddNewBillForJalSansthan" ||
+                      pathname === "/VarifyBillForJalSansthan"
+                        ? "active"
+                        : ""
+                    }
+                  >
+                    <ListItem>
+                      <ListItemPrefix>
+                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                      </ListItemPrefix>
+                      Verified Monthly Bill for Jal Sansthan
+                    </ListItem>
+                  </NavLink>
+
+                  <NavLink
+                    to="/AddConsolidatedSummary"
+                    className={
+                      pathname === "/UploadConsolidatedSummary" ? "active" : ""
+                    }
+                  >
+                    <ListItem>
+                      <ListItemPrefix>
+                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                      </ListItemPrefix>
+                      Consolidated Summary
+                    </ListItem>
+                  </NavLink>
+                </List>
+              </AccordionBody>
+            </Accordion>
+
+            <Accordion
+              open={open === 3}
+              icon={
+                <ChevronDownIcon
+                  strokeWidth={2.5}
+                  className={`mx-auto h-4 w-4 transition-transform ${
+                    open === 1 ? "rotate-180" : ""
+                  }`}
+                />
+              }
+            >
+              <ListItem className="p-0" selected={open === 3}>
+                <AccordionHeader
+                  onClick={() => handleOpen(3)}
+                  className="border-b-0 p-3"
+                >
+                  <ListItemPrefix>
                     <DocumentCheckIcon className="h-5 w-5" />
                   </ListItemPrefix>
                   <Typography color="blue-gray" className="mr-auto font-medium">
@@ -398,16 +542,16 @@ export function Sidebar() {
               </ListItem>
               <AccordionBody className="py-1">
                 <List className="p-0">
-                  <NavLink to="/AdminBillForLocalBodies">
+                  <NavLink to="/ReportBillForLocalBodies">
                     <ListItem>
                       <ListItemPrefix>
                         <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                       </ListItemPrefix>
-                      Search Verified Monthly Bill Local Body
+                      Search Verified Monthly Bill for Local Bodies
                     </ListItem>
                   </NavLink>
 
-                  <NavLink to="/AdminMonthlyBillForIrrigation">
+                  <NavLink to="/ReportBillForIrrigation">
                     <ListItem>
                       <ListItemPrefix>
                         <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
@@ -416,7 +560,7 @@ export function Sidebar() {
                     </ListItem>
                   </NavLink>
 
-                  <NavLink to="/AdminBillForRiverMaster">
+                  <NavLink to="/ReportBillForRiverMaster">
                     <ListItem>
                       <ListItemPrefix>
                         <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
@@ -426,7 +570,7 @@ export function Sidebar() {
                     </ListItem>
                   </NavLink>
 
-                  <NavLink to="/AdminBillForJalSansthan">
+                  <NavLink to="/ReportBillForJalSansthan">
                     <ListItem>
                       <ListItemPrefix>
                         <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
@@ -436,7 +580,7 @@ export function Sidebar() {
                   </NavLink>
                 </List>
               </AccordionBody>
-            </Accordion>
+            </Accordion> */}
           </>
         )}
       </List>
