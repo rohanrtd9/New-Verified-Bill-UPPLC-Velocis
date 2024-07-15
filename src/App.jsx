@@ -47,11 +47,7 @@ import AdminStateTubewellMaster from "./pages/private/Admin/Master/AdminStateTub
 import AdminSmallPumpCanalMaster from "./pages/private/Admin/Master/AdminSmallPumpCanalMaster";
 import AdminMediumLargePumpCanalMaster from "./pages/private/Admin/Master/AdminMediumLargePumpCanalMaster";
 import AdminRiverPollutionMaster from "./pages/private/Admin/Master/AdminRiverPollutionMaster";
-
-import AdminBillForLocalBodies from "./pages/private/Admin/Report/AdminBillForLocalBodies";
-import AdminMonthlyBillForIrrigation from "./pages/private/Admin/Report/AdminMonthlyBillForIrrigation";
-import AdminBillForRiverMaster from "./pages/private/Admin/Report/AdminBillForRiverMaster";
-import AdminBillForJalSansthan from "./pages/private/Admin/Report/AdminBillForJalSansthan";
+import ApproveRejectMonthlyBill from "./pages/private/Admin/TransactionForm/ApproveRejectMonthlyBill";
 import ListConnections from "./pages/private/connection/ListConnection";
 import Login from "./pages/public/Login";
 
@@ -136,12 +132,10 @@ function App() {
               element={<ReportBillForJalSansthan />}
             />
             {/* Admin Route Here */}
-
             {/* <Route
               path="/MediumLargeCanalPumpMaster"
               element={<MediumLargeCanalPumpMaster />}
             /> */}
-
             <Route
               path="/AdminLocalBodyMaster"
               element={<AdminLocalBodyMaster />}
@@ -177,6 +171,10 @@ function App() {
             <Route
               path="/AdminRiverPollutionMaster"
               element={<AdminRiverPollutionMaster />}
+            />
+            <Route
+              path="/ApproveRejectMonthlyBill"
+              element={<ApproveRejectMonthlyBill />}
             />
           </Routes>
         </Layout>

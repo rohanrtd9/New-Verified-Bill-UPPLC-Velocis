@@ -379,6 +379,44 @@ export function Sidebar() {
               </AccordionBody>
             </Accordion>
 
+            <Accordion
+              open={open === 6}
+              icon={
+                <ChevronDownIcon
+                  strokeWidth={2.5}
+                  className={`mx-auto h-4 w-4 transition-transform ${
+                    open === 5 ? "rotate-180" : ""
+                  }`}
+                />
+              }
+            >
+              <ListItem className="p-0" selected={open === 6}>
+                <AccordionHeader
+                  onClick={() => handleOpen(6)}
+                  className="border-b-0 p-3"
+                >
+                  <ListItemPrefix>
+                    <PresentationChartBarIcon className="h-5 w-5" />
+                  </ListItemPrefix>
+                  <Typography color="blue-gray" className="mr-auto font-medium">
+                    Admin Transaction Form
+                  </Typography>
+                </AccordionHeader>
+              </ListItem>
+              <AccordionBody className="py-1">
+                <List className="p-0">
+                  <NavLink to="/ApproveRejectMonthlyBill">
+                    <ListItem>
+                      <ListItemPrefix>
+                        <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                      </ListItemPrefix>
+                      Approve/Reject Monthly Bill
+                    </ListItem>
+                  </NavLink>
+                </List>
+              </AccordionBody>
+            </Accordion>
+
             {/* <Accordion
               open={open === 1}
               icon={
