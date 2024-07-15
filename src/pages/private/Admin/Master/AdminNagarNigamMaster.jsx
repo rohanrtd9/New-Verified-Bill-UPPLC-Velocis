@@ -75,7 +75,8 @@ function AdminNagarNigamMaster() {
 
   const fetchCategories = async () => {
     const divisionName = {
-      divisionName: localBodyData.divisionName,
+      billFor: "Nagar Nigam",
+      masters: 1,
     };
     try {
       const response = await axios.post(
@@ -105,9 +106,10 @@ function AdminNagarNigamMaster() {
     const data = {
       divisionName: localBodyData.divisionName,
       categoryType: localBodyData.categoryType,
+      bodyType: "Nagar Nigam",
     };
     try {
-      const response = await axios.post(`${apiUrl}list-nigam-name`, data, {
+      const response = await axios.post(`${apiUrl}list-dropdownNames`, data, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,

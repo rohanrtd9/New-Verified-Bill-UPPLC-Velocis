@@ -4,7 +4,8 @@ import { apiUrl } from "../../../../constant";
 import Header from "../../../../component/Header";
 import { select, label, btn, input } from "../../../../utils/tailwindClasses";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
-import Loader from "../../../../component/Loader";
+import Loader from "../../../../component/Loader"; // Ensure Loader component is properly imported
+import { useUserContext } from "../../../../utils/userContext";
 
 function AdminRiverPollutionMaster() {
   const [divisions, setDivisions] = useState([]);
@@ -17,11 +18,22 @@ function AdminRiverPollutionMaster() {
   const [localBodies, setLocalBodies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { token } = useUserContext(); // Assuming useUserContext provides token
 
   useEffect(() => {
     const listDivisions = async () => {
+      setLoading(true);
       try {
-        const response = await axios.post(`${apiUrl}/list-divisions`);
+        const response = await axios.post(
+          `${apiUrl}/list-divisions`,
+          {},
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         console.log("Division Response:", response);
 
         if (response.data && response.data.records) {
@@ -32,10 +44,12 @@ function AdminRiverPollutionMaster() {
       } catch (error) {
         setError(error.response ? error.response.data : error.message);
         console.error("Division Error:", error);
+      } finally {
+        setLoading(false);
       }
     };
     listDivisions();
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     if (localBodyData.divisionName !== "") {
@@ -47,14 +61,22 @@ function AdminRiverPollutionMaster() {
   }, [localBodyData.divisionName]);
 
   const fetchLocalBodies = async () => {
+    setLoading(true);
     try {
-      const response = await axios.post(`${apiUrl}/list-river-pollution`, {});
+      const response = await axios.post(`${apiUrl}/list-river-pollution`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (response.data && response.data.records) {
         setLocalBodies(response.data.records);
       }
     } catch (error) {
       setError(error.response ? error.response.data : error.message);
       console.error("Error fetching local bodies:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -66,7 +88,12 @@ function AdminRiverPollutionMaster() {
       riverPollutionName: localBodyData.riverPollutionName,
     };
     axios
-      .post(`${apiUrl}/add-river-pollution`, data)
+      .post(`${apiUrl}/add-river-pollution`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         console.log("Response:", response);
         setLoading(false);
@@ -104,7 +131,13 @@ function AdminRiverPollutionMaster() {
     try {
       const response = await axios.put(
         `${apiUrl}/update-river-pollution`,
-        data
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log("Response:", response);
       alert("Record updated successfully.");
@@ -128,6 +161,10 @@ function AdminRiverPollutionMaster() {
     };
     axios
       .delete(`${apiUrl}/delete-river-pollution`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         data: data,
       })
       .then((response) => {
@@ -176,7 +213,7 @@ function AdminRiverPollutionMaster() {
           path: "",
         }}
       />
-
+      {loading && <Loader />} {/* Show Loader when loading state is true */}
       <div
         className="mt-8 max-w-xxl p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 
         dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 mx-auto"
@@ -227,7 +264,6 @@ function AdminRiverPollutionMaster() {
           Reset
         </button>
       </div>
-
       <div className="mt-10 relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

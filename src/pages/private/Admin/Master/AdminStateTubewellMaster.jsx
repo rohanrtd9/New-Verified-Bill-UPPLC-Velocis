@@ -5,26 +5,36 @@ import Header from "../../../../component/Header";
 import { select, label, btn, input } from "../../../../utils/tailwindClasses";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
 import Loader from "../../../../component/Loader";
+import { useUserContext } from "../../../../utils/userContext";
 
 function AdminStateTubewellMaster() {
   const [divisions, setDivisions] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [nagarPalikas, setNagarPalika] = useState([]);
-  const [isEdit, setIsEdit] = useState(false);
-  const [editId, setEditId] = useState(null);
   const [localBodyData, setLocalBodyData] = useState({
     divisionName: "",
     tubeWellName: "",
   });
   const [localBodies, setLocalBodies] = useState([]);
+  const [isEdit, setIsEdit] = useState(false);
+  const [editId, setEditId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { token } = useUserContext();
 
   useEffect(() => {
     const listDivisions = async () => {
       try {
-        const response = await axios.post(`${apiUrl}/list-divisions`);
-        console.log("Division Response:", response);
+        setLoading(true);
+        const response = await axios.post(
+          `${apiUrl}/list-divisions`,
+          {},
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setLoading(false);
 
         if (response.data && response.data.records) {
           setDivisions(response.data.records);
@@ -32,12 +42,13 @@ function AdminStateTubewellMaster() {
           console.error("Invalid division response structure:", response);
         }
       } catch (error) {
+        setLoading(false);
         setError(error.response ? error.response.data : error.message);
         console.error("Division Error:", error);
       }
     };
     listDivisions();
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     if (localBodyData.divisionName !== "") {
@@ -50,17 +61,29 @@ function AdminStateTubewellMaster() {
 
   const fetchLocalBodies = async () => {
     try {
-      const response = await axios.post(`${apiUrl}/list-tube-well`, {});
+      setLoading(true);
+      const response = await axios.post(
+        `${apiUrl}/list-tube-well`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setLoading(false);
+
       if (response.data && response.data.records) {
         setLocalBodies(response.data.records);
       }
     } catch (error) {
+      setLoading(false);
       setError(error.response ? error.response.data : error.message);
       console.error("Error fetching local bodies:", error);
     }
   };
 
-  // Save Nagar Palika Master Data
   const saveJalSansthanMaster = () => {
     setLoading(true);
     const data = {
@@ -68,10 +91,15 @@ function AdminStateTubewellMaster() {
       tubeWellName: localBodyData.tubeWellName,
     };
     axios
-      .post(`${apiUrl}/add-tube-well`, data)
+      .post(`${apiUrl}/add-tube-well`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
-        console.log("Response:", response);
         setLoading(false);
+        console.log("Response:", response);
         alert("Record Saved Successfully");
         resetForm();
         fetchLocalBodies();
@@ -86,7 +114,6 @@ function AdminStateTubewellMaster() {
       });
   };
 
-  // Edit Nagar Palika Master Data
   const editConnection = (body) => {
     setLocalBodyData({
       divisionName: body.divisionName,
@@ -104,15 +131,20 @@ function AdminStateTubewellMaster() {
       tubeWellName: localBodyData.tubeWellName,
     };
     try {
-      const response = await axios.put(`${apiUrl}/update-tube-well`, data);
+      const response = await axios.put(`${apiUrl}/update-tube-well`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setLoading(false);
       console.log("Response:", response);
       alert("Record updated successfully.");
-      setLoading(false);
       resetForm();
       fetchLocalBodies();
     } catch (error) {
-      alert(error.message);
       setLoading(false);
+      alert(error.message);
       console.error(
         "Error:",
         error.response ? error.response.data : error.message
@@ -127,6 +159,10 @@ function AdminStateTubewellMaster() {
     };
     axios
       .delete(`${apiUrl}/delete-tube-well`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         data: data,
       })
       .then((response) => {
@@ -164,7 +200,7 @@ function AdminStateTubewellMaster() {
 
   useEffect(() => {
     fetchLocalBodies();
-  }, []);
+  }, [token]);
 
   return (
     <>
@@ -175,7 +211,7 @@ function AdminStateTubewellMaster() {
           path: "",
         }}
       />
-
+      {loading && <Loader />} {/* Display Loader when loading is true */}
       <div
         className="mt-8 max-w-xxl p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 
         dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 mx-auto"
@@ -226,7 +262,6 @@ function AdminStateTubewellMaster() {
           Reset
         </button>
       </div>
-
       <div className="mt-10 relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

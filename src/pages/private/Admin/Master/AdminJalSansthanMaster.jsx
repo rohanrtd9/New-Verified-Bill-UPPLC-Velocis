@@ -5,11 +5,10 @@ import Header from "../../../../component/Header";
 import { select, label, btn, input } from "../../../../utils/tailwindClasses";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
 import Loader from "../../../../component/Loader";
+import { useUserContext } from "../../../../utils/userContext";
 
 function AdminJalSansthanMaster() {
   const [divisions, setDivisions] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [nagarPalikas, setNagarPalika] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const [editId, setEditId] = useState(null);
   const [localBodyData, setLocalBodyData] = useState({
@@ -19,11 +18,22 @@ function AdminJalSansthanMaster() {
   const [localBodies, setLocalBodies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { token } = useUserContext();
 
   useEffect(() => {
     const listDivisions = async () => {
       try {
-        const response = await axios.post(`${apiUrl}/list-divisions`);
+        setLoading(true);
+        const response = await axios.post(
+          `${apiUrl}/list-divisions`,
+          {},
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         console.log("Division Response:", response);
 
         if (response.data && response.data.records) {
@@ -34,10 +44,12 @@ function AdminJalSansthanMaster() {
       } catch (error) {
         setError(error.response ? error.response.data : error.message);
         console.error("Division Error:", error);
+      } finally {
+        setLoading(false);
       }
     };
     listDivisions();
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     if (localBodyData.divisionName !== "") {
@@ -45,34 +57,12 @@ function AdminJalSansthanMaster() {
         ...prevData,
         jalSansthanName: "",
       }));
-      fetchCategories();
     }
   }, [localBodyData.divisionName]);
 
-  const fetchCategories = async () => {
-    const divisionName = {
-      divisionName: localBodyData.divisionName,
-    };
-    try {
-      const response = await axios.post(
-        `${apiUrl}/list-category`,
-        divisionName
-      );
-      console.log("Category Response:", response);
-
-      if (response.data && response.data.records) {
-        setCategories(response.data.records);
-      } else {
-        console.error("Invalid category response structure:", response);
-      }
-    } catch (error) {
-      setError(error.response ? error.response.data : error.message);
-      console.error("Category Error:", error);
-    }
-  };
-
   const fetchLocalBodies = async () => {
     try {
+      setLoading(true);
       const response = await axios.post(`${apiUrl}/list-jal-sasthan`, {});
       if (response.data && response.data.records) {
         setLocalBodies(response.data.records);
@@ -80,10 +70,12 @@ function AdminJalSansthanMaster() {
     } catch (error) {
       setError(error.response ? error.response.data : error.message);
       console.error("Error fetching local bodies:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Save Nagar Palika Master Data
+  // Save Jal Sansthan Master Data
   const saveJalSansthanMaster = () => {
     setLoading(true);
     const data = {
@@ -91,7 +83,12 @@ function AdminJalSansthanMaster() {
       jalSansthanName: localBodyData.jalSansthanName,
     };
     axios
-      .post(`${apiUrl}/add-jal-sasthan`, data)
+      .post(`${apiUrl}/add-jal-sasthan`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         console.log("Response:", response);
         setLoading(false);
@@ -103,13 +100,13 @@ function AdminJalSansthanMaster() {
         setLoading(false);
         alert(error.message);
         console.error(
-          "Error saving Nagar Palika record:",
+          "Error saving Jal Sansthan record:",
           error.response ? error.response.data : error.message
         );
       });
   };
 
-  // Edit Nagar Palika Master Data
+  // Edit Jal Sansthan Master Data
   const editConnection = (body) => {
     setLocalBodyData({
       divisionName: body.divisionName,
@@ -127,7 +124,12 @@ function AdminJalSansthanMaster() {
       jalSansthanName: localBodyData.jalSansthanName,
     };
     try {
-      const response = await axios.put(`${apiUrl}/update-jal-sasthan`, data);
+      const response = await axios.put(`${apiUrl}/update-jal-sasthan`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       console.log("Response:", response);
       alert("Record updated successfully.");
       setLoading(false);
@@ -150,6 +152,10 @@ function AdminJalSansthanMaster() {
     };
     axios
       .delete(`${apiUrl}/delete-jal-sasthan`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         data: data,
       })
       .then((response) => {
@@ -199,6 +205,10 @@ function AdminJalSansthanMaster() {
         }}
       />
 
+      {loading && <Loader />}
+
+      {error && <p className="text-red-500">Error: {error}</p>}
+
       <div
         className="mt-8 max-w-xxl p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 
         dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 mx-auto"
@@ -231,7 +241,7 @@ function AdminJalSansthanMaster() {
               onChange={handleInputChange}
               required
             />
-            <label className={label}>Nagar Panchayat Name</label>
+            <label className={label}>Jal Sansthan Name</label>
           </div>
         </div>
 

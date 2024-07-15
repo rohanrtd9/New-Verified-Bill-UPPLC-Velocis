@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { apiUrl } from "../../../../constant";
 import Header from "../../../../component/Header";
-import { select, label, btn } from "../../../../utils/tailwindClasses";
+import { select, input, label, btn } from "../../../../utils/tailwindClasses";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
 import Loader from "../../../../component/Loader";
+import { useUserContext } from "../../../../utils/userContext";
 
 function AdminNagarPalikaMaster() {
   const [divisions, setDivisions] = useState([]);
@@ -20,11 +21,22 @@ function AdminNagarPalikaMaster() {
   const [localBodies, setLocalBodies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { token } = useUserContext();
 
   useEffect(() => {
     const listDivisions = async () => {
       try {
-        const response = await axios.post(`${apiUrl}/list-divisions`);
+        setLoading(true); // Set loading state to true before API call
+        const response = await axios.post(
+          `${apiUrl}/list-divisions`,
+          {},
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         console.log("Division Response:", response);
 
         if (response.data && response.data.records) {
@@ -35,10 +47,12 @@ function AdminNagarPalikaMaster() {
       } catch (error) {
         setError(error.response ? error.response.data : error.message);
         console.error("Division Error:", error);
+      } finally {
+        setLoading(false); // Set loading state to false after API call completes
       }
     };
     listDivisions();
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     if (localBodyData.divisionName !== "") {
@@ -57,18 +71,34 @@ function AdminNagarPalikaMaster() {
         ...prevData,
         nagarPalikaName: "",
       }));
+    }
+  }, [localBodyData.categoryType]);
+
+  useEffect(() => {
+    if (localBodyData.categoryType !== "") {
+      setLocalBodyData({
+        ...localBodyData,
+        nagarPalikaName: "",
+      });
       fetchNagarPalika();
     }
   }, [localBodyData.categoryType]);
 
   const fetchCategories = async () => {
     const divisionName = {
-      divisionName: localBodyData.divisionName,
+      billFor: "Nagar Palika",
+      masters: 1,
     };
     try {
       const response = await axios.post(
         `${apiUrl}/list-category`,
-        divisionName
+        divisionName,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log("Category Response:", response);
 
@@ -83,35 +113,50 @@ function AdminNagarPalikaMaster() {
     }
   };
 
-  const fetchNagarPalika = async () => {
-    const data = {
-      divisionName: localBodyData.divisionName,
-      categoryType: localBodyData.categoryType,
-    };
-    try {
-      const response = await axios.post(`${apiUrl}/list-palika-name`, data);
-      console.log("Nagar Palika Response:", response);
-
-      if (response.data && response.data.records) {
-        setNagarPalika(response.data.records);
-      } else {
-        console.error("Invalid nagar palika response structure:", response);
-      }
-    } catch (error) {
-      setError(error.response ? error.response.data : error.message);
-      console.error("Nagar Palika Error:", error);
-    }
-  };
-
   const fetchLocalBodies = async () => {
     try {
-      const response = await axios.post(`${apiUrl}/list-nagar-palika`, {});
+      const response = await axios.post(
+        `${apiUrl}/list-nagar-palika`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (response.data && response.data.records) {
         setLocalBodies(response.data.records);
       }
     } catch (error) {
       setError(error.response ? error.response.data : error.message);
       console.error("Error fetching local bodies:", error);
+    }
+  };
+
+  const fetchNagarPalika = async () => {
+    const data = {
+      divisionName: localBodyData.divisionName,
+      categoryType: localBodyData.categoryType,
+      bodyType: "Nagar Palika",
+    };
+    try {
+      const response = await axios.post(`${apiUrl}list-dropdownNames`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("Nagar Palika Response:", response);
+
+      if (response.data && response.data.records) {
+        setNagarPalika(response.data.records);
+      } else {
+        console.error("Invalid Nagar Palika response structure:", response);
+      }
+    } catch (error) {
+      setError(error.response ? error.response.data : error.message);
+      console.error("Nagar Palika Error:", error);
     }
   };
 
@@ -124,7 +169,12 @@ function AdminNagarPalikaMaster() {
       nagarPalikaName: localBodyData.nagarPalikaName,
     };
     axios
-      .post(`${apiUrl}/add-nagar-palika`, data)
+      .post(`${apiUrl}add-nagar-palika`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         console.log("Response:", response);
         setLoading(false);
@@ -162,7 +212,12 @@ function AdminNagarPalikaMaster() {
       nagarPalikaName: localBodyData.nagarPalikaName,
     };
     try {
-      const response = await axios.put(`${apiUrl}/update-nagar-palika`, data);
+      const response = await axios.put(`${apiUrl}update-nagar-palika`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       console.log("Response:", response);
       alert("Record updated successfully.");
       setLoading(false);
@@ -184,9 +239,19 @@ function AdminNagarPalikaMaster() {
       nagarPalikaID: id,
     };
     axios
-      .delete(`${apiUrl}/delete-nagar-palika`, {
-        data: data,
-      })
+
+      .delete(
+        `${apiUrl}delete-nagar-palika`,
+        {
+          data: data,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then((response) => {
         setLoading(false);
         console.log("Response:", response);

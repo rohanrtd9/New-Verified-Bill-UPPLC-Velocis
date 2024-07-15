@@ -5,13 +5,10 @@ import Header from "../../../../component/Header";
 import { select, label, btn, input } from "../../../../utils/tailwindClasses";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
 import Loader from "../../../../component/Loader";
+import { useUserContext } from "../../../../utils/userContext";
 
 function AdminSmallPumpCanalMaster() {
   const [divisions, setDivisions] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [nagarPalikas, setNagarPalika] = useState([]);
-  const [isEdit, setIsEdit] = useState(false);
-  const [editId, setEditId] = useState(null);
   const [localBodyData, setLocalBodyData] = useState({
     divisionName: "",
     smallPumpName: "",
@@ -19,13 +16,23 @@ function AdminSmallPumpCanalMaster() {
   const [localBodies, setLocalBodies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isEdit, setIsEdit] = useState(false);
+  const [editId, setEditId] = useState(null);
+  const { token } = useUserContext();
 
   useEffect(() => {
     const listDivisions = async () => {
       try {
-        const response = await axios.post(`${apiUrl}/list-divisions`);
-        console.log("Division Response:", response);
-
+        const response = await axios.post(
+          `${apiUrl}/list-divisions`,
+          {},
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         if (response.data && response.data.records) {
           setDivisions(response.data.records);
         } else {
@@ -37,7 +44,7 @@ function AdminSmallPumpCanalMaster() {
       }
     };
     listDivisions();
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     if (localBodyData.divisionName !== "") {
@@ -50,17 +57,28 @@ function AdminSmallPumpCanalMaster() {
 
   const fetchLocalBodies = async () => {
     try {
-      const response = await axios.post(`${apiUrl}/list-small-pump`, {});
+      setLoading(true);
+      const response = await axios.post(
+        `${apiUrl}/list-small-pump`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (response.data && response.data.records) {
         setLocalBodies(response.data.records);
       }
+      setLoading(false);
     } catch (error) {
       setError(error.response ? error.response.data : error.message);
       console.error("Error fetching local bodies:", error);
+      setLoading(false);
     }
   };
 
-  // Save Nagar Palika Master Data
   const saveJalSansthanMaster = () => {
     setLoading(true);
     const data = {
@@ -68,7 +86,12 @@ function AdminSmallPumpCanalMaster() {
       smallPumpName: localBodyData.smallPumpName,
     };
     axios
-      .post(`${apiUrl}/add-small-pump`, data)
+      .post(`${apiUrl}/add-small-pump`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         console.log("Response:", response);
         setLoading(false);
@@ -86,7 +109,6 @@ function AdminSmallPumpCanalMaster() {
       });
   };
 
-  // Edit Nagar Palika Master Data
   const editConnection = (body) => {
     setLocalBodyData({
       divisionName: body.divisionName,
@@ -104,7 +126,12 @@ function AdminSmallPumpCanalMaster() {
       smallPumpName: localBodyData.smallPumpName,
     };
     try {
-      const response = await axios.put(`${apiUrl}/update-small-pump`, data);
+      const response = await axios.put(`${apiUrl}/update-small-pump`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       console.log("Response:", response);
       alert("Record updated successfully.");
       setLoading(false);
@@ -127,6 +154,10 @@ function AdminSmallPumpCanalMaster() {
     };
     axios
       .delete(`${apiUrl}/delete-small-pump`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         data: data,
       })
       .then((response) => {
@@ -211,10 +242,10 @@ function AdminSmallPumpCanalMaster() {
             <label className={label}>Small Pump Canal Name</label>
           </div>
         </div>
-
         <button
           className={btn}
           onClick={isEdit ? updateConnection : saveJalSansthanMaster}
+          disabled={loading} // Disable button when loading
         >
           {isEdit ? "Update" : "Save"}
         </button>
@@ -222,9 +253,12 @@ function AdminSmallPumpCanalMaster() {
           type="button"
           className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
           onClick={resetForm}
+          disabled={loading} // Disable button when loading
         >
           Reset
         </button>
+        {loading && <Loader />}{" "}
+        {/* Display loader when loading state is true */}
       </div>
 
       <div className="mt-10 relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -238,7 +272,7 @@ function AdminSmallPumpCanalMaster() {
                 Division Name
               </th>
               <th scope="col" className="px-6 py-3">
-                State Tube well Name
+                Small Pump Canal Name
               </th>
               <th scope="col" className="px-6 py-3">
                 Edit
@@ -263,6 +297,7 @@ function AdminSmallPumpCanalMaster() {
                   <button
                     onClick={() => editConnection(body)}
                     className="text-indigo-600 hover:text-indigo-900"
+                    disabled={loading} // Disable button when loading
                   >
                     <PencilSquareIcon className="h-6 w-6" />
                   </button>
@@ -271,6 +306,7 @@ function AdminSmallPumpCanalMaster() {
                   <button
                     onClick={() => deleteConnection(body._id)}
                     className="text-red-600 hover:text-red-900"
+                    disabled={loading} // Disable button when loading
                   >
                     <TrashIcon className="h-6 w-6" />
                   </button>
@@ -283,4 +319,5 @@ function AdminSmallPumpCanalMaster() {
     </>
   );
 }
+
 export default AdminSmallPumpCanalMaster;

@@ -5,11 +5,13 @@ import Header from "../../../../component/Header";
 import { select, label, btn, input } from "../../../../utils/tailwindClasses";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
 import Loader from "../../../../component/Loader";
+import { useUserContext } from "../../../../utils/userContext";
 
 function AdminNagarPanchayatMaster() {
   const [divisions, setDivisions] = useState([]);
   const [categories, setCategories] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
+  const [nagarPanchayat, setNagarPanchayat] = useState([]);
   const [editId, setEditId] = useState(null);
   const [localBodyData, setLocalBodyData] = useState({
     divisionName: "",
@@ -19,11 +21,21 @@ function AdminNagarPanchayatMaster() {
   const [localBodies, setLocalBodies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { token } = useUserContext();
 
   useEffect(() => {
     const listDivisions = async () => {
       try {
-        const response = await axios.post(`${apiUrl}/list-divisions`);
+        const response = await axios.post(
+          `${apiUrl}/list-divisions`,
+          {},
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         console.log("Division Response:", response);
 
         if (response.data && response.data.records) {
@@ -37,7 +49,7 @@ function AdminNagarPanchayatMaster() {
       }
     };
     listDivisions();
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     if (localBodyData.divisionName !== "") {
@@ -56,18 +68,34 @@ function AdminNagarPanchayatMaster() {
         ...prevData,
         nagarPanchayatName: "",
       }));
-      fetchNagarPalika();
+    }
+  }, [localBodyData.categoryType]);
+
+  useEffect(() => {
+    if (localBodyData.categoryType !== "") {
+      setLocalBodyData({
+        ...localBodyData,
+        nagarPanchayatName: "",
+      });
+      fetchNagarPanchayat();
     }
   }, [localBodyData.categoryType]);
 
   const fetchCategories = async () => {
     const divisionName = {
-      divisionName: localBodyData.divisionName,
+      billFor: "Nagar Panchayat",
+      masters: 1,
     };
     try {
       const response = await axios.post(
         `${apiUrl}/list-category`,
-        divisionName
+        divisionName,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log("Category Response:", response);
 
@@ -84,13 +112,48 @@ function AdminNagarPanchayatMaster() {
 
   const fetchLocalBodies = async () => {
     try {
-      const response = await axios.post(`${apiUrl}/list-nagar-panchayat`, {});
+      const response = await axios.post(
+        `${apiUrl}/list-nagar-panchayat`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (response.data && response.data.records) {
         setLocalBodies(response.data.records);
       }
     } catch (error) {
       setError(error.response ? error.response.data : error.message);
       console.error("Error fetching local bodies:", error);
+    }
+  };
+
+  const fetchNagarPanchayat = async () => {
+    const data = {
+      divisionName: localBodyData.divisionName,
+      categoryType: localBodyData.categoryType,
+      bodyType: "Nagar Panchayat",
+    };
+    try {
+      const response = await axios.post(`${apiUrl}list-dropdownNames`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("Nagar Palika Response:", response);
+
+      if (response.data && response.data.records) {
+        setNagarPanchayat(response.data.records);
+      } else {
+        console.error("Invalid Nagar Palika response structure:", response);
+      }
+    } catch (error) {
+      setError(error.response ? error.response.data : error.message);
+      console.error("Nagar Palika Error:", error);
     }
   };
 
@@ -103,7 +166,12 @@ function AdminNagarPanchayatMaster() {
       nagarPanchayatName: localBodyData.nagarPanchayatName,
     };
     axios
-      .post(`${apiUrl}/add-nagar-panchayat`, data)
+      .post(`${apiUrl}/add-nagar-panchayat`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         console.log("Response:", response);
         setLoading(false);
@@ -143,7 +211,13 @@ function AdminNagarPanchayatMaster() {
     try {
       const response = await axios.put(
         `${apiUrl}/update-nagar-panchayat`,
-        data
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log("Response:", response);
       alert("Record updated successfully.");
@@ -167,6 +241,10 @@ function AdminNagarPanchayatMaster() {
     };
     axios
       .delete(`${apiUrl}/delete-nagar-panchayat`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         data: data,
       })
       .then((response) => {
@@ -206,6 +284,7 @@ function AdminNagarPanchayatMaster() {
   useEffect(() => {
     fetchLocalBodies();
   }, []);
+
   return (
     <>
       <Header
@@ -215,7 +294,6 @@ function AdminNagarPanchayatMaster() {
           path: "",
         }}
       />
-
       <div className="mt-8 max-w-xxl p-6 bg-white border border-gray-200 rounded-lg shadow">
         <div className="grid md:grid-cols-3 md:gap-6">
           <div className="relative z-0 w-full col-md-4 mb-4 group">
@@ -253,16 +331,20 @@ function AdminNagarPanchayatMaster() {
           </div>
 
           <div className="relative z-0 w-full col-md-4 mb-4 group">
-            <input
-              type="text"
+            <label className={label}>Nagar Panchayat Name</label>
+            <select
               name="nagarPanchayatName"
-              className={input}
-              placeholder=" "
+              className={select}
               value={localBodyData.nagarPanchayatName}
               onChange={handleInputChange}
-              required
-            />
-            <label className={label}>Nagar Panchayat Name</label>
+            >
+              <option value="">Select</option>
+              {nagarPanchayat.map((nagarPalika, index) => (
+                <option key={index} value={nagarPalika}>
+                  {nagarPalika}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
 
@@ -280,7 +362,7 @@ function AdminNagarPanchayatMaster() {
           Reset
         </button>
       </div>
-
+      {loading && <Loader />} {/* Display loader when loading is true */}
       <div className="mt-10 relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -342,4 +424,5 @@ function AdminNagarPanchayatMaster() {
     </>
   );
 }
+
 export default AdminNagarPanchayatMaster;
