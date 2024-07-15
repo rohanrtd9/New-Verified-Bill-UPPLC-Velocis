@@ -6,9 +6,11 @@ import { select, label, btn } from "../../../../utils/tailwindClasses";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
 import Loader from "../../../../component/Loader";
 import { useNavigate } from "react-router-dom";
+import { useUserContext } from "../../../../utils/userContext";
 
 function AdminNagarNigamMaster() {
   const [divisions, setDivisions] = useState([]);
+  const { token } = useUserContext();
   const [categories, setCategories] = useState([]);
   const [nagarNigams, setNagarNigams] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
@@ -21,25 +23,35 @@ function AdminNagarNigamMaster() {
   const [localBodies, setLocalBodies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const listDivisions = async () => {
-      try {
-        const response = await axios.post(`${apiUrl}/list-divisions`);
-        console.log("Division Response:", response);
-
-        if (response.data && response.data.records) {
-          setDivisions(response.data.records);
-        } else {
-          console.error("Invalid division response structure:", response);
+  const listDivisions = async () => {
+    try {
+      const response = await axios.post(
+        `${apiUrl}list-divisions`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
-      } catch (error) {
-        setError(error.response ? error.response.data : error.message);
-        console.error("Division Error:", error);
+      );
+      console.log("Division Response:", response);
+
+      if (response.data && response.data.records) {
+        setDivisions(response.data.records);
+      } else {
+        console.error("Invalid division response structure:", response);
       }
-    };
-    listDivisions();
-  }, []);
+    } catch (error) {
+      setError(error.response ? error.response.data : error.message);
+      console.error("Division Error:", error);
+    }
+  };
+  useEffect(() => {
+    if (token !== "") {
+      listDivisions();
+    }
+  }, [token]);
 
   useEffect(() => {
     if (localBodyData.divisionName !== "") {
@@ -67,8 +79,14 @@ function AdminNagarNigamMaster() {
     };
     try {
       const response = await axios.post(
-        `${apiUrl}/list-category`,
-        divisionName
+        `${apiUrl}list-category`,
+        divisionName,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log("Category Response:", response);
 
@@ -89,7 +107,12 @@ function AdminNagarNigamMaster() {
       categoryType: localBodyData.categoryType,
     };
     try {
-      const response = await axios.post(`${apiUrl}/list-nigam-name`, data);
+      const response = await axios.post(`${apiUrl}list-nigam-name`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       console.log("Nagar Nigam Response:", response);
 
       if (response.data && response.data.records) {
@@ -105,7 +128,16 @@ function AdminNagarNigamMaster() {
 
   const fetchLocalBodies = async () => {
     try {
-      const response = await axios.post(`${apiUrl}/list-nagar-nigam`, {});
+      const response = await axios.post(
+        `${apiUrl}list-nagar-nigam`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log("Local Bodies Response:", response);
       if (response.data && response.data.records) {
         setLocalBodies(response.data.records);
@@ -125,7 +157,12 @@ function AdminNagarNigamMaster() {
       nagarNigamName: localBodyData.nagarNigamName,
     };
     axios
-      .post(`${apiUrl}/add-nagar-nigam`, data)
+      .post(`${apiUrl}add-nagar-nigam`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         console.log("Response:", response);
         setLoading(false);
@@ -165,7 +202,12 @@ function AdminNagarNigamMaster() {
       nagarNigamName: localBodyData.nagarNigamName,
     };
     try {
-      const response = await axios.put(`${apiUrl}/update-nagar-nigam`, data);
+      const response = await axios.put(`${apiUrl}update-nagar-nigam`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       console.log("Response:", response);
       alert("Record updated successfully.");
       setLoading(false);
@@ -188,9 +230,18 @@ function AdminNagarNigamMaster() {
     };
 
     axios
-      .delete(`${apiUrl}delete-nagar-nigam`, {
-        data: data,
-      })
+      .delete(
+        `${apiUrl}delete-nagar-nigam`,
+        {
+          data: data,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then((response) => {
         setLoading(false);
         console.log("Response:", response);

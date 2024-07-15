@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-  const [userType, setUserType] = useState("division");
+  const [userType, setUserType] = useState("");
   const [userData, setUserData] = useState(null);
   const [token, setToken] = useState("");
   return (

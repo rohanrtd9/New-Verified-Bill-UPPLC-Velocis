@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Card,
   Typography,
@@ -17,16 +17,28 @@ import {
 } from "@heroicons/react/24/solid";
 import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import uppclLogo from "./../assets/logo.jpeg";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useUserContext } from "../utils/userContext";
 
 export function Sidebar() {
   const { pathname } = useLocation();
-  const { userType } = useUserContext();
+  const navigate = useNavigate();
+  const { userType, setUserType, setToken } = useUserContext();
   const [open, setOpen] = React.useState(0);
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
   };
+  useEffect(() => {
+    const userData = localStorage.getItem("userData");
+    const authToken = localStorage.getItem("token");
+    if (userData !== null) {
+      const role = JSON.parse(userData).role;
+      setToken(authToken);
+      setUserType(role);
+    } else {
+      navigate("/login", { replace: true });
+    }
+  }, [pathname]);
 
   return (
     <Card className="min-h-screen w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5 sideBar">
@@ -42,7 +54,7 @@ export function Sidebar() {
             Dashboard
           </ListItem>
         </NavLink>
-        {userType === "division" ? (
+        {userType === "DIVISION" ? (
           <>
             <Accordion
               open={open === 1}

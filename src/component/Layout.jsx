@@ -58,7 +58,7 @@ const Dropdown = ({ color }) => {
                   : openDropdownPopover();
               }}
             >
-              {user?.CIRCLE_NAME}
+              {user?.DIVISION_NAME}
             </button>
             <div
               ref={popoverDropdownRef}
@@ -77,19 +77,6 @@ const Dropdown = ({ color }) => {
                 onClick={logout}
               >
                 Logout
-              </button>
-              <hr />
-              <button
-                className={
-                  "text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-transparent " +
-                  (color === "white" ? " text-gray-800" : "text-white")
-                }
-                onClick={() => {
-                  setDropdownPopoverShow(false);
-                  setUserType(userType === "division" ? "admin" : "division");
-                }}
-              >
-                Change user type
               </button>
             </div>
           </div>

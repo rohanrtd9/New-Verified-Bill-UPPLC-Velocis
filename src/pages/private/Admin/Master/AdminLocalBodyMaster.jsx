@@ -6,8 +6,10 @@ import axios from "axios";
 import { apiUrl } from "../../../../constant";
 import Loader from "../../../../component/Loader";
 import { useNavigate } from "react-router-dom";
+import { useUserContext } from "../../../../utils/userContext";
 
 function AdminLocalBodyMaster() {
+  const { token } = useUserContext();
   const [localBodyTypes, setLocalBodyTypes] = useState([]);
   const [localBodies, setLocalBodies] = useState([]);
   const [error, setError] = useState(null);
@@ -22,28 +24,45 @@ function AdminLocalBodyMaster() {
     bodyType: "",
     bodyName: "",
   });
-
-  useEffect(() => {
-    const fetchLocalBodyTypes = async () => {
-      try {
-        const response = await axios.post(`${apiUrl}/list-body-type`);
+  const fetchLocalBodyTypes = () => {
+    axios
+      .post(
+        `${apiUrl}list-body-type`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response) => {
         console.log("Response:", response);
-
         if (response.data && response.data.records) {
           setLocalBodyTypes(response.data.records);
         } else {
           console.error("Invalid response structure:", response);
         }
-      } catch (error) {
-        setError(error.response ? error.response.data : error.message);
-        console.error("Error:", error);
-      }
-    };
-    fetchLocalBodyTypes();
-  }, []);
+      })
+      .catch((error) => {
+        console.error(
+          "Error:",
+          error.response ? error.response.data : error.message
+        );
+      });
+  };
   const fetchLocalBodies = async () => {
     try {
-      const response = await axios.post(`${apiUrl}/list-local-bodies`, {});
+      const response = await axios.post(
+        `${apiUrl}/list-local-bodies`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log("Response:", response);
       if (response.data && response.data.records) {
         setLocalBodies(response.data.records);
@@ -54,8 +73,11 @@ function AdminLocalBodyMaster() {
     }
   };
   useEffect(() => {
-    fetchLocalBodies();
-  }, []);
+    if (token !== "") {
+      fetchLocalBodyTypes();
+      fetchLocalBodies();
+    }
+  }, [token]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
